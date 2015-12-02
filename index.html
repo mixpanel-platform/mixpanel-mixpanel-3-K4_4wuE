@@ -18,8 +18,8 @@
       return conversions
     }
     
-    var from = moment().day(1).subtract(104, 'weeks');
-    var interval = 30;
+    var from = moment().day(1).subtract(24, 'months');
+    var interval = 1;
     
       MP.api.ready(function() {
         var $chart = $('<div></div>').appendTo('body');

@@ -19,7 +19,7 @@
     }
     
     var from = moment().day(1).subtract(24, 'months');
-    var interval = 30;
+    var unit = month;
     
       MP.api.ready(function() {
         var $chart = $('<div></div>').appendTo('body');
@@ -27,7 +27,7 @@
             from: from,
             to: moment(),
             type: 'unique',
-            interval: interval,
+            unit: unit,
             where: 'not "flurry" in string(properties["origin"]) and (string(properties["$browser"]) == "Chrome") and (string(properties["mp_country_code"]) != "CN")'
         });
         
@@ -35,7 +35,7 @@
             from: from,
             to: moment(),
             type: 'unique',
-            interval: interval,
+            unit: unit,
             where: 'not "flurry" in string(properties["origin"]) and (string(properties["$browser"]) == "Chrome") and (string(properties["mp_country_code"]) != "CN") and (string(properties["origin"]) != "invite")'
         });
    
@@ -43,21 +43,21 @@
             from: from,
             to: moment(),
             type: 'unique',
-            interval: interval
+            unit: unit,
         });
         
         var blocked = MP.api.segment('personal blocked email sent', null, {
             from: from,
             to: moment(),
             type: 'unique',
-            interval: interval
+            unit: unit,
         });
         
         var viewed_pricing_page = MP.api.segment('View pricing page', null, {
             from: from,
             to: moment(),
             type: 'unique',
-            interval: interval,
+            unit: unit,
             where: 'boolean(properties["user_id"]) == true'
         });
         
@@ -65,7 +65,7 @@
             from: from,
             to: moment(),
             type: 'unique',
-            interval: interval
+            unit: unit,
         });
         
       $.when(homepage, signups, first_payment, viewed_pricing_page, blocked, badge_added).done(
@@ -91,7 +91,7 @@
     var params = {
      from: from,
      to: moment(),
-     interval: interval,
+     unit: unit,
      length: 1
     };
     var pricing_to_payment = MP.api.funnel({event:'View pricing page', selector:'boolean(properties["user_id"]) == true'}, '$custom_event:56005', params);

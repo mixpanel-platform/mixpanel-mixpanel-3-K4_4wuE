@@ -1,15 +1,117 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="https://cdn.mxpnl.com/libs/mixpanel-platform/css/reset.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.css">
     <script src="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.js"></script>
   </head>
   <body class="mixpanel-platform-body">
-    <h1>Hello, World!</h1>
+    <div class="mixpanel-platform-section">
+      
+    </div>
     <script>
-      // Run queries and display results here
+    function build_conversion(data){
+      var conversions = {}
+      for (date in data){
+        conversions[date] = data[date]["step_conv_ratio"]
+      }
+      return conversions
+    }
+    
+    var from = moment().day(1).subtract(104, 'weeks');
+    var interval = 7;
+    
+      MP.api.ready(function() {
+        var $chart = $('<div></div>').appendTo('body');
+        var homepage = MP.api.segment('homepage new', null, {
+            from: from,
+            to: moment(),
+            type: 'unique',
+            interval: interval,
+            where: 'not "flurry" in string(properties["origin"]) and (string(properties["$browser"]) == "Chrome") and (string(properties["mp_country_code"]) != "CN")'
+        });
+        
+        var signups = MP.api.segment('$signup', null, {
+            from: from,
+            to: moment(),
+            type: 'unique',
+            interval: interval,
+            where: 'not "flurry" in string(properties["origin"]) and (string(properties["$browser"]) == "Chrome") and (string(properties["mp_country_code"]) != "CN") and (string(properties["origin"]) != "invite")'
+        });
+   
+        var first_payment = MP.api.segment('$custom_event:56005', null, {
+            from: from,
+            to: moment(),
+            type: 'unique',
+            interval: interval
+        });
+        
+        var blocked = MP.api.segment('personal blocked email sent', null, {
+            from: from,
+            to: moment(),
+            type: 'unique',
+            interval: interval
+        });
+        
+        var viewed_pricing_page = MP.api.segment('View pricing page', null, {
+            from: from,
+            to: moment(),
+            type: 'unique',
+            interval: interval,
+            where: 'boolean(properties["user_id"]) == true'
+        });
+        
+        var badge_added = MP.api.segment('badge added', null, {
+            from: from,
+            to: moment(),
+            type: 'unique',
+            interval: interval
+        });
+        
+      $.when(homepage, signups, first_payment, viewed_pricing_page, blocked, badge_added).done(
+           function(homepage, signups, first_payment, viewed_pricing_page, blocked, badge_added) { 
+              $chart.MPChart({
+                    chartType: 'line'
+                });
+               
+               var myFilter = function(val) {
+                 return val > 0;
+               };
+
+                $chart.MPChart('addSeries', homepage.filter(myFilter));
+                $chart.MPChart('addSeries', signups.filter(myFilter));
+               
+                $chart.MPChart('addSeries', blocked.filter(myFilter));
+                $chart.MPChart('addSeries', viewed_pricing_page.filter(myFilter));
+               
+                $chart.MPChart('addSeries', badge_added.filter(myFilter));
+                $chart.MPChart('addSeries', first_payment.filter(myFilter));
+           });
+      });
+    var params = {
+     from: from,
+     to: moment(),
+     interval: interval,
+     length: 1
+    };
+    var pricing_to_payment = MP.api.funnel({event:'View pricing page', selector:'boolean(properties["user_id"]) == true'}, '$custom_event:56005', params);
+    var pricing_to_badge = MP.api.funnel({event:'View pricing page', selector:'boolean(properties["user_id"]) == true'}, 'badge added', params);
+    
+    $.when(pricing_to_payment, pricing_to_badge).done(function(pricing_to_payment, pricing_to_badge) { 
+          
+          payment_conversion = build_conversion(pricing_to_payment[1]);
+          badge_conversion = build_conversion(pricing_to_badge[1]);
+
+           var data = {}
+           data["pricing page to payment"] = payment_conversion;
+           data["pricing page to badge added"] = badge_conversion;
+           var lineChart = $('<div></div>').appendTo('body').MPChart({chartType: 'line', highchartsOptions: {
+               tooltip: {
+                   backgroundColor: '#fffce7'  // Make tooltip background yellow
+               }
+           }});                                // Create a line chart
+           lineChart.MPChart('setData', data); // Set the chart's data
+     });
     </script>
   </body>
 </html>

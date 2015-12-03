@@ -7,33 +7,35 @@
   </head>
   <body class="mixpanel-platform-body">
     <script>
-    function build_conversion(data){
-      var conversions = {}
-      for (date in data){
-        conversions[date] = data[date]["step_conv_ratio"]
-      }
-      return conversions
-    }
-    
-    var from = moment().day(1).subtract(104, 'weeks');
-    var unit = 'month';
-    var params = {
-      from: from,
-      to: moment(),
-      type: 'unique',
-      unit: unit,
-      where: 'not "flurry" in string(properties["origin"]) and (string(properties["$browser"]) == "Chrome") and (string(properties["mp_country_code"]) != "CN")'
-    };
-    var notInvParams = {
-      from: from,
-      to: moment(),
-      type: 'unique',
-      unit: unit,
-      where: 'not "flurry" in string(properties["origin"]) and (string(properties["$browser"]) == "Chrome") and (string(properties["mp_country_code"]) != "CN") and (string(properties["origin"]) != "invite")'
+      function build_conversion(data){
+        var conversions = {}
+        for (date in data){
+          conversions[date] = data[date]["step_conv_ratio"]
         }
+        return conversions
+      }
+      
+      var from = moment().day(1).subtract(104, 'weeks');
+      var unit = 'month';
+      var params = {
+        from: from,
+        to: moment(),
+        type: 'unique',
+        unit: unit,
+        where: 'not "flurry" in string(properties["origin"]) and (string(properties["$browser"]) == "Chrome") and (string(properties["mp_country_code"]) != "CN")'
+      };
+      
+      var notInvParams = {
+        from: from,
+        to: moment(),
+        type: 'unique',
+        unit: unit,
+        where: 'not "flurry" in string(properties["origin"]) and (string(properties["$browser"]) == "Chrome") and (string(properties["mp_country_code"]) != "CN") and (string(properties["origin"]) != "invite")'
+      };
     
       MP.api.ready(function() {
-        var $chart = $('<div></div>').appendTo('body');
+        var $monthly = $('<div></div>').appendTo('body');
+        var $conversionMonthly = $('<div></div>').appendTo('body');
         var homepageEvent = 'homepage new';
         var homepage = MP.api.segment(homepageEvent, null, params );
         var signupEvent = '$signup'
@@ -43,20 +45,26 @@
         
       $.when(homepage, signups, first_payment).done(
            function(homepage, signups, first_payment) {
-             console.log( MP.Data.inst(signups.values()[signupEvent]).divide(MP.Data.inst(homepage.values()[homepageEvent])))
-             console.log( MP.Data.inst(first_payment.values()[first_paymentEvent]).divide(MP.Data.inst(signups.values()[signupEvent])))
+             var signupConv = MP.Data.inst(signups.values()[signupEvent]).divide(MP.Data.inst(homepage.values()[homepageEvent]))
+             var firstPaymentConv = MP.Data.inst(first_payment.values()[first_paymentEvent]).divide(MP.Data.inst(signups.values()[signupEvent]))
              debugger
-              $chart.MPChart({
+              $monthly.MPChart({
                     chartType: 'line'
-                 });
+                });
+              $conversionMontlhy.MPChart({
+                    chartType: 'line'
+                });
                
-               var myFilter = function(val) {
-                 return val > 0;
-               };
+              var myFilter = function(val) {
+                return val > 0;
+              };
 
-                $chart.MPChart('addSeries', homepage.filter(myFilter));
-                $chart.MPChart('addSeries', signups.filter(myFilter));
-                $chart.MPChart('addSeries', first_payment.filter(myFilter));
+              $monthly.MPChart('addSeries', homepage.filter(myFilter));
+              $monthly.MPChart('addSeries', signups.filter(myFilter));
+              $monthly.MPChart('addSeries', first_payment.filter(myFilter));
+              
+              $conversionMonthly.MPChart('addSeries', signupConv.filter(myFilter))
+              $conversionMonthly.MPChart('addSeries', firstPaymentConv.filter(myFilter))
            });
       });
     </script>

@@ -21,18 +21,18 @@
     var from = moment().day(1).subtract(104, 'weeks');
     var unit = 'month';
     var params = {
-            from: from,
-            to: moment(),
-            type: 'unique',
-            unit: unit,
-            where: 'not "flurry" in string(properties["origin"]) and (string(properties["$browser"]) == "Chrome") and (string(properties["mp_country_code"]) != "CN")'
-        };
+      from: from,
+      to: moment(),
+      type: 'unique',
+      unit: unit,
+      where: 'not "flurry" in string(properties["origin"]) and (string(properties["$browser"]) == "Chrome") and (string(properties["mp_country_code"]) != "CN")'
+    };
     var notInvParams = {
-            from: from,
-            to: moment(),
-            type: 'unique',
-            unit: unit,
-            where: 'not "flurry" in string(properties["origin"]) and (string(properties["$browser"]) == "Chrome") and (string(properties["mp_country_code"]) != "CN") and (string(properties["origin"]) != "invite")'
+      from: from,
+      to: moment(),
+      type: 'unique',
+      unit: unit,
+      where: 'not "flurry" in string(properties["origin"]) and (string(properties["$browser"]) == "Chrome") and (string(properties["mp_country_code"]) != "CN") and (string(properties["origin"]) != "invite")'
         }
     
       MP.api.ready(function() {
@@ -56,11 +56,6 @@
 
                 $chart.MPChart('addSeries', homepage.filter(myFilter));
                 $chart.MPChart('addSeries', signups.filter(myFilter));
-               
-                $chart.MPChart('addSeries', blocked.filter(myFilter));
-                $chart.MPChart('addSeries', viewed_pricing_page.filter(myFilter));
-               
-                $chart.MPChart('addSeries', badge_added.filter(myFilter));
                 $chart.MPChart('addSeries', first_payment.filter(myFilter));
            });
       });

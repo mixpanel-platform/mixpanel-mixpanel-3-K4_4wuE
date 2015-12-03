@@ -37,14 +37,14 @@
     
       MP.api.ready(function() {
         var $chart = $('<div></div>').appendTo('body');
-        var homepage = MP.api.segment('homepage new', null, params );
-        
+        var homepageEvent = 'homepage new';
+        var homepage = MP.api.segment(homepageEvent, null, params );
         var signups = MP.api.segment('$signup', null, notInvParams);
-   
         var first_payment = MP.api.segment('$custom_event:56005', null, params);
         
       $.when(homepage, signups, first_payment).done(
            function(homepage, signups, first_payment) {
+             homepage.values()[homepageEvent]
              debugger
               $chart.MPChart({
                     chartType: 'line'

@@ -46,7 +46,7 @@
         
       $.when(homepage, signups, first_payment).done(
            function(homepage, signups, first_payment) {
-             console.log(homepage.values()[homepageEvent].divide(signups.values()[signupEvent]))
+             console.log( MP.Data.inst(homepage.values()[homepageEvent]).divide(MP.Data.inst(signups.values()[signupEvent])))
              debugger
               $chart.MPChart({
                     chartType: 'line'

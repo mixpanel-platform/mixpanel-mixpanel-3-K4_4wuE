@@ -14,6 +14,12 @@
         }
         return conversions
       }
+      function getQuarter(d) {
+        var d = new Date(d) || new Date();
+        var m = Math.floor(d.getMonth()/3);
+        debugger  
+        return m > 4? m - 4 : m;
+      }
       
       var from = moment().day(1).subtract(104, 'weeks');
       var unit = 'month';

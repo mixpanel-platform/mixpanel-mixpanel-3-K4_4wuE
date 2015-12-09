@@ -36,13 +36,13 @@
       
       function qtrly(queryResults, eventName) {
           var qtrResults = {}
-          qtrResults[signupEvent] = {}
-          for (date in queryResults.values()[signupEvent]) {
+          qtrResults[eventName] = {}
+          for (date in queryResults.values()[eventName]) {
             var qtrStr = qtr(date)
             if (!qtrResults[eventName][qtrStr]){
               qtrResults[eventName][qtrStr] = 0;
             }
-            qtrResults[eventName][qtrStr] += queryResults.json[signupEvent][date]
+            qtrResults[eventName][qtrStr] += queryResults.json[eventName][date]
           }
           return qtrResults
       }

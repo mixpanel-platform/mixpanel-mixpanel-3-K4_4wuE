@@ -34,6 +34,19 @@
         return year + "-" + val[qtr - 1]
       } 
       
+      function qtrly(queryResults, eventName) {
+          var qtrResults = {}
+          qtrResults[signupEvent] = {}
+          for (date in queryResults.values()[signupEvent]) {
+            var qtrStr = qtr(date)
+            if (!qtrResults[eventName][qtrStr]){
+              qtrResults[eventName][qtrStr] = 0;
+            }
+            qtrResults[eventName][qtrStr] += queryResults.json[signupEvent][date]
+          }
+          return qtrResults
+      }
+      
       var from = moment().day(1).subtract(104, 'weeks');
       var unit = 'month';
       var params = {
@@ -64,24 +77,19 @@
         var signupEvent = '$signup'
         var signups = MP.api.segment(signupEvent, null, notInvParams);
         
-        var first_paymentEvent = '$custom_event:56005'
-        var first_payment = MP.api.segment(first_paymentEvent, null, params);
+        var firstPaymentEvent = '$custom_event:56005'
+        var firstPayment = MP.api.segment(first_paymentEvent, null, params);
         
         
-      $.when(homepage, signups, first_payment).done(
-           function(homepage, signups, first_payment) {
+      $.when(homepage, signups, firstPayment).done(
+           function(homepage, signups, firstPayment) {
              var signupConv = { 'Signup Conversion' : MP.Data.inst(signups.values()[signupEvent]).divide(MP.Data.inst(homepage.values()[homepageEvent])).json }
-             var firstPaymentConv = { 'First Payment Conversion' : MP.Data.inst(first_payment.values()[first_paymentEvent]).divide(MP.Data.inst(signups.values()[signupEvent])).json }
-              var signupQtrly = {}
+             var firstPaymentConv = { 'First Payment Conversion' : MP.Data.inst(firstPayment.values()[firstPaymentEvent]).divide(MP.Data.inst(signups.values()[signupEvent])).json }
+              var signupQtrly = qtrly(signups, signupEvent)
               signupQtrly[signupEvent] = {}
-              for (date in signups.values()[signupEvent]) {
-                var qtrStr = qtr(date)
-                if (!signupQtrly[signupEvent][qtrStr]){
-                  signupQtrly[signupEvent][qtrStr] = 0;
-                }
-                signupQtrly[signupEvent][qtrStr] += signups.json[signupEvent][date]
-              }
+              var homepageQtrly = {}
               debugger
+              
               $monthly.MPChart({
                   chartType: 'line'
               });
@@ -104,7 +112,8 @@
 
               $monthly.MPChart('addSeries', homepage.filter(myFilter));
               $monthly.MPChart('addSeries', signups.filter(myFilter));
-              $monthly.MPChart('addSeries', first_payment.filter(myFilter));
+              $monthly.MPChart('addSeries', firstPayment.filter(myFilter));
+              
               
               $conversionMonthly.MPChart('addSeries', signupConv)
               $conversionMonthly.MPChart('addSeries', firstPaymentConv)

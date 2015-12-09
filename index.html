@@ -35,7 +35,7 @@
       } 
       
       function conversion(dividend, divisor, dividendEvent, divisorEvent) {
-         return {  : MP.Data.inst(dividend.values()[dividendEvent]).divide(MP.Data.inst(divisor.values()[divisorEvent])).json }
+         return  MP.Data.inst(dividend.values()[dividendEvent]).divide(MP.Data.inst(divisor.values()[divisorEvent])).json 
       }
       
       function qtrly(queryResults, eventName) {
@@ -87,7 +87,7 @@
         
       $.when(homepage, signups, firstPayment).done(
            function(homepage, signups, firstPayment) {
-             var signupConv = conversion(signups, homepage, signupEvent, homepageEvent)
+             var signupConv = {"Sign up Conversion" : conversion(signups, homepage, signupEvent, homepageEvent) }
              var firstPaymentConv = { 'First Payment Conversion' : MP.Data.inst(firstPayment.values()[firstPaymentEvent]).divide(MP.Data.inst(signups.values()[signupEvent])).json }
               var signupQtrly = MP.Data.inst(qtrly(signups, signupEvent))
               var homepageQtrly = MP.Data.inst(qtrly(homepage, homepageEvent))

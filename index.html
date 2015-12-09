@@ -16,9 +16,7 @@
       }
       
       function getQuarter(d) {
-        var m = getMonth(d);
-        var q = [1,2,3,4];
-        return q[Math.floor(m / 3)]
+        return Math.ceil( getMonth(d) / 3)
       }
       
       function getMonth(d) {

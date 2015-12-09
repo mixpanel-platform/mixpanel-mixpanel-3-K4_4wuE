@@ -14,6 +14,7 @@
         }
         return conversions
       }
+      
       function getQuarter(d) {
         var d = new Date(d) || new Date();
         var m = Math.floor(d.getMonth()/3);
@@ -60,6 +61,9 @@
              debugger
              var signupConv = { 'Signup Conversion' : MP.Data.inst(signups.values()[signupEvent]).divide(MP.Data.inst(homepage.values()[homepageEvent])).json }
              var firstPaymentConv = { 'First Payment Conversion' : MP.Data.inst(first_payment.values()[first_paymentEvent]).divide(MP.Data.inst(signups.values()[signupEvent])).json }
+              for (date in signupConv["Signup Conversion"]) { 
+               getQuarter(date)
+              }
               $monthly.MPChart({
                   chartType: 'line'
               });

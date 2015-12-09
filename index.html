@@ -80,7 +80,7 @@
                 if (!signupQtrly[signupEvent][qtrStr]){
                   signupQtrly[signupEvent][qtrStr] = 0;
                 }
-                signupQtrly[signupEvent][qtrStr] += signups[signupEvent][date]
+                signupQtrly[signupEvent][qtrStr] += signups.json[signupEvent][date]
               }
               debugger
               $monthly.MPChart({

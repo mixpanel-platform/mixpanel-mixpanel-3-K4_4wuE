@@ -16,10 +16,10 @@
       }
       
       function getQuarter(d) {
+        debugger
         var d = new Date(d) || new Date();
-        var m = Math.ceil( (d.getMonth() + 1) / 3);
-        debugger  
-        return m > 4? m - 4 : m;
+        var q = [1,2,3,4];
+        return q[Math.floor(d.getMonth() / 3)]
       }
       
       function getYear(d) {

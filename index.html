@@ -74,7 +74,7 @@
              var signupConv = { 'Signup Conversion' : MP.Data.inst(signups.values()[signupEvent]).divide(MP.Data.inst(homepage.values()[homepageEvent])).json }
              var firstPaymentConv = { 'First Payment Conversion' : MP.Data.inst(first_payment.values()[first_paymentEvent]).divide(MP.Data.inst(signups.values()[signupEvent])).json }
               var signupQtrly = { "Signup Conversion": {} }
-              for (date in signupConv["Signup Conversion"]) {
+              for (date in signup.values()[signupEvent]) {
                 var qtrStr = qtr(date)
                 if (!signupQtrly["Signup Conversion"][qtrStr]){
                   signupQtrly["Signup Conversion"][qtrStr] = 0;

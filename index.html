@@ -76,10 +76,10 @@
               var signupQtrly = { "Signup Conversion": {} }
               for (date in signups.values()[signupEvent]) {
                 var qtrStr = qtr(date)
-                if (!signupQtrly["Signup Conversion"][qtrStr]){
-                  signupQtrly["Signup Conversion"][qtrStr] = 0;
+                if (!signupQtrly[signupEvent][qtrStr]){
+                  signupQtrly[signupEvent][qtrStr] = 0;
                 }
-                signupQtrly["Signup Conversion"][qtrStr] += signups["Signup Conversion"][date]
+                signupQtrly[signupEvent][qtrStr] += signups[][date]
               }
               debugger
               $monthly.MPChart({

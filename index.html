@@ -25,6 +25,15 @@
         where: 'not "flurry" in string(properties["origin"]) and (string(properties["$browser"]) == "Chrome") and (string(properties["mp_country_code"]) != "CN")'
       };
       
+      var paramsQtrly = {
+        from: from,
+        to: moment(),
+        type: 'unique',
+        unit: unit,
+        interval: 3,
+        where: 'not "flurry" in string(properties["origin"]) and (string(properties["$browser"]) == "Chrome") and (string(properties["mp_country_code"]) != "CN")'
+      };
+      
       var notInvParams = {
         from: from,
         to: moment(),
@@ -32,27 +41,53 @@
         unit: unit,
         where: 'not "flurry" in string(properties["origin"]) and (string(properties["$browser"]) == "Chrome") and (string(properties["mp_country_code"]) != "CN") and (string(properties["origin"]) != "invite")'
       };
+      
+      var notInvParamsQtrly = {
+        from: from,
+        to: moment(),
+        type: 'unique',
+        unit: unit,
+        interval: 3,
+        where: 'not "flurry" in string(properties["origin"]) and (string(properties["$browser"]) == "Chrome") and (string(properties["mp_country_code"]) != "CN") and (string(properties["origin"]) != "invite")'
+      };
     
       MP.api.ready(function() {
         var $monthly = $('<div></div>').appendTo('body');
+        var $qtrly = $('<div></div>').appendTo('body');
         var $conversionMonthly = $('<div></div>').appendTo('body');
+        var $conversionQtrly = $('<div></div>').appendTo('body');
+        
         var homepageEvent = 'homepage new';
         var homepage = MP.api.segment(homepageEvent, null, params );
+        var homepageQtrly = MP.api.segment(homepageEvent, null, paramsQtrly );
         var signupEvent = '$signup'
         var signups = MP.api.segment(signupEvent, null, notInvParams);
+        var signupsQtrly = MP.api.segment(signupEvent, null, notInvParamsQtrly);
         var first_paymentEvent = '$custom_event:56005'
         var first_payment = MP.api.segment(first_paymentEvent, null, params);
+        var first_paymentQtrly = MP.api.segment(first_paymentEvent, null, paramsQtrly);
         
-      $.when(homepage, signups, first_payment).done(
-           function(homepage, signups, first_payment) {
+        
+      $.when(homepage, signups, first_payment, signupsQtrly, homepageQtrly, first_paymentQtryly).done(
+           function(homepage, signups, first_payment, signupsQtrly, homepageQtrly, first_paymentQtryly) {
+             debugger
              var signupConv = { 'Signup Conversion' : MP.Data.inst(signups.values()[signupEvent]).divide(MP.Data.inst(homepage.values()[homepageEvent])).json }
              var firstPaymentConv = { 'First Payment Conversion' : MP.Data.inst(first_payment.values()[first_paymentEvent]).divide(MP.Data.inst(signups.values()[signupEvent])).json }
               $monthly.MPChart({
-                    chartType: 'line'
-                });
+                  chartType: 'line'
+              });
+        
+              $qtrly.MPChart({
+                  chartType: 'line'
+              });
+        
               $conversionMonthly.MPChart({
-                    chartType: 'line'
-                });
+                  chartType: 'line'
+              });
+              
+              $conversionQtrly.MPChart({
+                  chartType: 'line'
+              });
                
               var myFilter = function(val) {
                 return val > 0;

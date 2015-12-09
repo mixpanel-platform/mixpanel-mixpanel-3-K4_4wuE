@@ -47,7 +47,6 @@
            function(homepage, signups, first_payment) {
              var signupConv = { 'Signup Conversion' : MP.Data.inst(signups.values()[signupEvent]).divide(MP.Data.inst(homepage.values()[homepageEvent])).json }
              var firstPaymentConv = { 'First Payment Conversion' : MP.Data.inst(first_payment.values()[first_paymentEvent]).divide(MP.Data.inst(signups.values()[signupEvent])).json }
-             debugger
               $monthly.MPChart({
                     chartType: 'line'
                 });

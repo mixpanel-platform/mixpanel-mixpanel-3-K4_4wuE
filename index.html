@@ -29,7 +29,7 @@
       function qtr(dateStr){
         var qtr = getQuarter(dateStr);
         var year = getYear(dateStr);
-        return "Q" + qtr + " " year
+        return "Q" + qtr + " " + year
       }
       
       var from = moment().day(1).subtract(104, 'weeks');

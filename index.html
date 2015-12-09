@@ -22,6 +22,16 @@
         return m > 4? m - 4 : m;
       }
       
+      function getYear(d) {
+        return d.slice(0,4)
+      }
+      
+      function qtr(dateStr){
+        var qtr = getQuarter(dateStr);
+        var year = getYear(dateStr);
+        return "Q" + qtr + " " year
+      }
+      
       var from = moment().day(1).subtract(104, 'weeks');
       var unit = 'month';
       var params = {
@@ -62,7 +72,7 @@
              var signupConv = { 'Signup Conversion' : MP.Data.inst(signups.values()[signupEvent]).divide(MP.Data.inst(homepage.values()[homepageEvent])).json }
              var firstPaymentConv = { 'First Payment Conversion' : MP.Data.inst(first_payment.values()[first_paymentEvent]).divide(MP.Data.inst(signups.values()[signupEvent])).json }
               for (date in signupConv["Signup Conversion"]) { 
-               getQuarter(date)
+                gtr(date)
               }
               $monthly.MPChart({
                   chartType: 'line'

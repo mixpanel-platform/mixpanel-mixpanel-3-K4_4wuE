@@ -34,7 +34,7 @@
         return year + "-" + val[qtr - 1]
       } 
       
-      function conversion(dividend, divisor, dividendEvent, divisorEvent) {
+      function conversion(dividend, dividendEvent, divisor, divisorEvent) {
          return  MP.Data.inst(dividend.values()[dividendEvent]).divide(MP.Data.inst(divisor.values()[divisorEvent])).json 
       }
       
@@ -87,12 +87,15 @@
         
       $.when(homepage, signups, firstPayment).done(
            function(homepage, signups, firstPayment) {
-             var signupConv = {"Sign up Conversion" : conversion(signups, homepage, signupEvent, homepageEvent) }
-             var firstPaymentConv = { 'First Payment Conversion' : MP.Data.inst(firstPayment.values()[firstPaymentEvent]).divide(MP.Data.inst(signups.values()[signupEvent])).json }
+              var signupConv = {"Sign up Conversion" : conversion(signups, signupEvent, homepage, homepageEvent) }
+              var firstPaymentConv = { "First Payment Conversion" : conversion(firstPayment, firstPaymentEvent, signups, signupEvent)}
+              
               var signupQtrly = MP.Data.inst(qtrly(signups, signupEvent))
               var homepageQtrly = MP.Data.inst(qtrly(homepage, homepageEvent))
               var firstPaymentQtrly = MP.Data.inst(qtrly(firstPayment, firstPaymentEvent))
               
+              var signupQtrlyConversion ={"Sign up Conversion" : conversion(signupQtrly, signupEvent, homepageQtrly, homepageEvent) }
+              var firstPaymentQtrlyConversion = = { "First Payment Conversion" : conversion(firstPaymentQtrly, firstPaymentEvent, signupsQtrly, signupEvent)}
               $monthly.MPChart({
                   chartType: 'line'
               });
@@ -123,6 +126,10 @@
               
               $conversionMonthly.MPChart('addSeries', signupConv)
               $conversionMonthly.MPChart('addSeries', firstPaymentConv)
+
+              $conversionQtrly.MPChart('addSeries', signupQtrlyConversion)
+              $conversionQtrly.MPChart('addSeries', firstPaymentQtrlyConversion)
+              
            });
       });
     </script>

@@ -94,8 +94,8 @@
               var homepageQtrly = MP.Data.inst(qtrly(homepage, homepageEvent))
               var firstPaymentQtrly = MP.Data.inst(qtrly(firstPayment, firstPaymentEvent))
               
-              var signupQtrlyConversion ={"Sign up Conversion" : conversion(signupQtrly, signupEvent, homepageQtrly, homepageEvent) }
-              var firstPaymentQtrlyConversion = = { "First Payment Conversion" : conversion(firstPaymentQtrly, firstPaymentEvent, signupsQtrly, signupEvent)}
+              var signupQtrlyConversion = {"Sign up Conversion" : conversion(signupQtrly, signupEvent, homepageQtrly, homepageEvent) }
+              var firstPaymentQtrlyConversion = { "First Payment Conversion" : conversion(firstPaymentQtrly, firstPaymentEvent, signupsQtrly, signupEvent)}
               $monthly.MPChart({
                   chartType: 'line'
               });

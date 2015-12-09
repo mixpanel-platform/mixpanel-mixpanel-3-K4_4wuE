@@ -17,9 +17,13 @@
       
       function getQuarter(d) {
         debugger
-        var d = new Date(d) || new Date();
+        var m = getMonth(d);
         var q = [1,2,3,4];
-        return q[Math.floor(d.getMonth() / 3)]
+        return q[Math.floor(m / 3)]
+      }
+      
+      function getMonth(d) {
+       return d.slice(5,7)
       }
       
       function getYear(d) {

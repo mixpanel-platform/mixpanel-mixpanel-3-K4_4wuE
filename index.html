@@ -31,7 +31,7 @@
         var qtr = getQuarter(dateStr);
         var year = getYear(dateStr);
         var val = ['01-01', '04-01', '07-01', '10-01']
-        return year + "-" + val[qtr]
+        return year + "-" + val[qtr - 1]
       } 
       
       var from = moment().day(1).subtract(104, 'weeks');

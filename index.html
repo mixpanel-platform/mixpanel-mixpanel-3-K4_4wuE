@@ -87,8 +87,7 @@
              var firstPaymentConv = { 'First Payment Conversion' : MP.Data.inst(firstPayment.values()[firstPaymentEvent]).divide(MP.Data.inst(signups.values()[signupEvent])).json }
               var signupQtrly = MP.Data.inst(qtrly(signups, signupEvent))
               var homepageQtrly = MP.Data.inst(qtrly(homepage, homepageEvent))
-              var firstPayment = MP.Data.inst(qtrly(firstPayment, firstPaymentEvent))
-              debugger
+              var firstPaymentQtrly = MP.Data.inst(qtrly(firstPayment, firstPaymentEvent))
               
               $monthly.MPChart({
                   chartType: 'line'
@@ -114,6 +113,9 @@
               $monthly.MPChart('addSeries', signups.filter(myFilter));
               $monthly.MPChart('addSeries', firstPayment.filter(myFilter));
               
+              $qtrly.MPChart('addSeries', signupQtrly.filter(myFilter));
+              $qtrly.MPChart('addSeries', homepageQtrly.filter(myFilter));
+              $qtrly.MPChart('addSeries', firstPaymentQtrly.filter(myFilter));
               
               $conversionMonthly.MPChart('addSeries', signupConv)
               $conversionMonthly.MPChart('addSeries', firstPaymentConv)

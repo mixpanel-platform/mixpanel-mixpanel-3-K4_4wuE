@@ -98,10 +98,10 @@
       $.when(homepage, signups, firstPaymentDate).done(
            function(homepage, signups, firstPaymentDateObj) {
               var firstPayment = MP.Data.inst({firstPaymentEvent: firstPaymentDateObj.results})
-              debugger
               var signupConv = {"Sign up Conversion" : conversion(signups, signupEvent, homepage, homepageEvent) }
               
               // replace this with the first payment insights request
+              debugger
               var firstPaymentConv = { "First Payment Conversion" : conversion(firstPayment, firstPaymentEvent, signups, signupEvent)}
               // for each month request signup where people first integration == month same not invited stuff
               // signup -> viewed report for each month where event integration is in the month and as a funnel 7 and 30 days

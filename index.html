@@ -117,12 +117,12 @@
           where: ''
       };
       
-      var whereStr = 'not "flurry" in string(properties["origin"]) and (string(properties["mp_country_code"]) != "CN") and (string(properties["$browser"]) == "Chrome") and boolean(user["is_invited_user"]) == true'
+      var whereStr = 'not "flurry" in string(properties["origin"]) and (string(properties["mp_country_code"]) != "CN") and (string(properties["$browser"]) == "Chrome") and boolean(user["is_invited_user"]) == true and '
         while (currentDate < moment()) {
           mnthlyParams.from = currentDate
           mnthlyParams.to = currentDate.add(1, 'month')
           debugger
-          mnthlyParams.where = whereStr + "2014-01" in string(user["Event Integration"])
+          mnthlyParams.where = whereStr + currentDate.year+ "-" + currentDate.month + "in string(user["Event Integration"])"
           monthlyPromises.push()
         }
         

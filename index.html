@@ -140,10 +140,12 @@
           var results = promises[promise].json
           for (date in results) {
             tmpseven += results[date]['undefined']['counts'][6] || 0;
-            tmpthirty += date[date]['undefined']['counts'][29] || 0;
+            tmpthirty += results[date]['undefined']['counts'][29] || 0;
           }
-          tmpseven = 0
-          tmpthirty = 0
+          sevenday[date] = tmpseven;
+          thirtyday[date] = tmpthirty;
+          tmpseven = 0;
+          tmpthirty = 0;
           
         }
       })

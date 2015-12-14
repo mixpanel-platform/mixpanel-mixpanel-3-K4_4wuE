@@ -118,10 +118,12 @@
       var currentDate = moment(from);
       while (currentDate < moment()) {
         mnthlyParams.from = currentDate.toDate()
-        mnthlyParams.where = whereStr + currentDate.year()+ '-' + currentDate.month() + 'in string(user["Event Integration"])'
+        mnthlyParams.where = whereStr + currentDate.year()+ '-' + (currentDate.month() + 1) + 'in string(user["Event Integration"])'
         mnthlyParams.to = currentDate.add(1, 'month')
-        monthlyPromises.push()
+        monthlyPromises.push(MP.api.retention('Viewed Report', mnthlyParams))
       }
+      
+      
         
       $.when(homepage, signups, firstPaymentDate).done(
            function(homepage, signups, firstPaymentDateObj) {

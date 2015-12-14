@@ -75,6 +75,8 @@
         to: moment(),
         type: 'unique',
         unit: unit,
+        born_where: 'user["is_invited_user"] == false',
+        born_on: 'user["is_invited_user"]',
         where: 'not "flurry" in string(properties["origin"]) and (string(properties["mp_country_code"]) != "CN") and (string(properties["$browser"]) == "Chrome") and boolean(user["is_invited_user"]) == false'
       };
       

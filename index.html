@@ -93,10 +93,10 @@
         var firstPaymentEvent = '$custom_event:56005'
         var firstPayment = MP.api.segment(firstPaymentEvent, null, params);
         
-        // var firstPaymentDate = MP.api.query(insightsEndpoint, insightsParams)
+        var firstPaymentDate = MP.api.query(insightsEndpoint, insightsParams)
         
-      $.when(homepage, signups, firstPayment).done(
-           function(homepage, signups, firstPayment) {
+      $.when(homepage, signups, firstPayment, firstPaymentDate).done(
+           function(homepage, signups, firstPayment, firstPaymentDate) {
               debugger
               var signupConv = {"Sign up Conversion" : conversion(signups, signupEvent, homepage, homepageEvent) }
               var firstPaymentConv = { "First Payment Conversion" : conversion(firstPayment, firstPaymentEvent, signups, signupEvent)}

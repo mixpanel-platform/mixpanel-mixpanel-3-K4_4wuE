@@ -34,6 +34,14 @@
         return year + "-" + val[qtr - 1]
       } 
       
+      function insightsConversion(results) {
+        var newResult = {};
+        for (result in results){
+          newResult[result] = results[result]['$total'];
+        }
+        return newResult;
+      }
+      
       function conversion(dividend, dividendEvent, divisor, divisorEvent) {
          return  MP.Data.inst(dividend.values()[dividendEvent]).divide(MP.Data.inst(divisor.values()[divisorEvent])).json 
       }
@@ -97,7 +105,7 @@
         
       $.when(homepage, signups, firstPaymentDate).done(
            function(homepage, signups, firstPaymentDateObj) {
-              var firstPayment = MP.Data.inst({'$custom_event:56005': firstPaymentDateObj.results})
+              var firstPayment = insightsConversion(MP.Data.inst({'$custom_event:56005': firstPaymentDateObj.results}))
               var signupConv = {'Sign up Conversion' : conversion(signups, signupEvent, homepage, homepageEvent) }
               
               // replace this with the first payment insights request

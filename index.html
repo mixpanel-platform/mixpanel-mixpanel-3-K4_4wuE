@@ -75,7 +75,7 @@
         to: moment(),
         type: 'unique',
         unit: unit,
-        where: 'not "flurry" in string(properties["origin"]) and (string(properties["mp_country_code"]) != "CN") and (string(properties["$browser"]) == "Chrome") and boolean(user["is_invited_user"]) == true'
+        where: 'not "flurry" in string(properties["origin"]) and (string(properties["mp_country_code"]) != "CN") and (string(properties["$browser"]) == "Chrome") and boolean(user["is_invited_user"]) == false'
       };
       
       var insightsEndpoint = 'api/2.0/engage/analytics'
@@ -114,7 +114,7 @@
           where: ''
       };
       
-      var whereStr = 'not "flurry" in string(properties["origin"]) and (string(properties["mp_country_code"]) != "CN") and (string(properties["$browser"]) == "Chrome") and boolean(user["is_invited_user"]) == true and '
+      var whereStr = 'not "flurry" in string(properties["origin"]) and (string(properties["mp_country_code"]) != "CN") and (string(properties["$browser"]) == "Chrome") and boolean(user["is_invited_user"]) == false and '
       debugger
       var monthsBack = 36
       var currentMonth;
@@ -124,7 +124,7 @@
         mnthlyParams.from = moment(from).add(monthsBack, 'month')
         currentMonth = moment(from).add(monthsBack, 'month').toISOString().slice(0,7)
         mnthlyParams.where = whereStr + '"' + currentMonth + '"' + ' in string(user["Event Integration"])'
-        monthlyPromises.push(MP.api.retention('Viewed Report', mnthlyParams))
+        monthlyPromises.push(MP.api.retention('Viewed report', mnthlyParams))
       }
       
       Promise.all(monthlyPromises).then(function(promises){

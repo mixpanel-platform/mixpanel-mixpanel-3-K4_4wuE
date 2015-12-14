@@ -117,10 +117,9 @@
       debugger
       var currentDate = moment(from);
       while (currentDate < moment()) {
-        mnthlyParams.from = currentDate._d
-        mnthlyParams.to = currentDate.add(1, 'month')
-        
+        mnthlyParams.from = currentDate.toDate()
         mnthlyParams.where = whereStr + currentDate.year()+ '-' + currentDate.month() + 'in string(user["Event Integration"])'
+        mnthlyParams.to = currentDate.add(1, 'month')
         monthlyPromises.push()
       }
         

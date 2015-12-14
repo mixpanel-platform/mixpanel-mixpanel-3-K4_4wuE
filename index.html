@@ -84,6 +84,8 @@
         var $qtrly = $('<div></div>').appendTo('body');
         var $conversionMonthly = $('<div></div>').appendTo('body');
         var $conversionQtrly = $('<div></div>').appendTo('body');
+        var $firstPaymentDate = $('<div></div>').appendTo('body');
+        var $firstPaymentDateQtrly = $('<div></div>').appendTo('body');
         
         var homepageEvent = 'homepage new';
         var homepage = MP.api.segment(homepageEvent, null, params );
@@ -96,7 +98,8 @@
         var firstPaymentDate = MP.api.query(insightsEndpoint, insightsParams)
         
       $.when(homepage, signups, firstPayment, firstPaymentDate).done(
-           function(homepage, signups, firstPayment, firstPaymentDate) {
+           function(homepage, signups, firstPayment, firstPaymentDateObj) {
+              var firstPaymentDate = MP.Data.inst(firstPaymentDateObj.results)
               debugger
               var signupConv = {"Sign up Conversion" : conversion(signups, signupEvent, homepage, homepageEvent) }
               var firstPaymentConv = { "First Payment Conversion" : conversion(firstPayment, firstPaymentEvent, signups, signupEvent)}
@@ -107,6 +110,8 @@
               
               var signupQtrlyConversion = {"Sign up Conversion" : conversion(signupQtrly, signupEvent, homepageQtrly, homepageEvent) }
               var firstPaymentQtrlyConversion = { "First Payment Conversion" : conversion(firstPaymentQtrly, firstPaymentEvent, signupQtrly, signupEvent)}
+              
+              var firstPaymentDateQtrly = qtrly(firstPaymentDate, 'First Payment Date')
               $monthly.MPChart({
                   chartType: 'line'
               });
@@ -122,6 +127,15 @@
               $conversionQtrly.MPChart({
                   chartType: 'line'
               });
+              
+              $firstPaymentDate.MPChart({
+                  chartType: 'line'
+              });
+              
+              $firstPaymentDateQtrly.MPChart({
+                  chartType: 'line'
+              });
+               
                
               var myFilter = function(val) {
                 return val > 0;
@@ -140,6 +154,9 @@
 
               $conversionQtrly.MPChart('addSeries', signupQtrlyConversion)
               $conversionQtrly.MPChart('addSeries', firstPaymentQtrlyConversion)
+              
+              $firstPaymentDate.MPChart('addSeries', firstPaymentDate)
+              $firstPaymentDateQtrly.MPChart('addSeries', firstPaymentDateQtrly)
               
            });
       });

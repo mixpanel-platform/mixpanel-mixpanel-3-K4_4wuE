@@ -116,11 +116,13 @@
       var whereStr = 'not "flurry" in string(properties["origin"]) and (string(properties["mp_country_code"]) != "CN") and (string(properties["$browser"]) == "Chrome") and boolean(user["is_invited_user"]) == true and '
       debugger
       var monthsBack = 36
+      var currentMonth;
       while ( monthsBack ) {
         mnthlyParams.to = moment(from).add(monthsBack, 'month')
         monthsBack--
         mnthlyParams.from = moment(from).add(monthsBack, 'month')
-        mnthlyParams.where = whereStr + moment(from).subtract(monthsBack, 'month').toISOString().slice(0,7) + ' in string(user["Event Integration"])'
+        currentMonth = moment(from).subtract(monthsBack, 'month').toISOString().slice(0,7)
+        mnthlyParams.where = whereStr + '"' + currentMonth + '"' + ' in string(user["Event Integration"])'
         monthlyPromises.push(MP.api.retention('Viewed Report', mnthlyParams))
       }
       

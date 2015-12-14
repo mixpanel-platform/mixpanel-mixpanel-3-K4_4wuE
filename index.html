@@ -106,8 +106,6 @@
         var currentDate = moment(from);
         var monthlyPromises = []
         var mnthlyParams = {
-          from: moment().subtract(1, 'months'),
-          to: moment(),
           unit: 'day',                      // specifies the the bucket size; can be 'day' or 'week'
           interval_count: 1,                // the number of desired units
           limit: 100,                       // maximum number of results to return
@@ -117,7 +115,7 @@
       
       var whereStr = 'not "flurry" in string(properties["origin"]) and (string(properties["mp_country_code"]) != "CN") and (string(properties["$browser"]) == "Chrome") and boolean(user["is_invited_user"]) == true and '
         while (currentDate < moment()) {
-          mnthlyParams.from = currentDate
+          mnthlyParams.from = currentDate._d
           mnthlyParams.to = currentDate.add(1, 'month')
           debugger
           mnthlyParams.where = whereStr + currentDate.year()+ '-' + currentDate.month() + 'in string(user["Event Integration"])'

@@ -97,6 +97,7 @@
         
       $.when(homepage, signups, firstPayment, firstPaymentDate).done(
            function(homepage, signups, firstPayment, firstPaymentDate) {
+              debugger
               var signupConv = {"Sign up Conversion" : conversion(signups, signupEvent, homepage, homepageEvent) }
               var firstPaymentConv = { "First Payment Conversion" : conversion(firstPayment, firstPaymentEvent, signups, signupEvent)}
               

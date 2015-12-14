@@ -86,7 +86,7 @@
         to: moment(),
         x_unit: 'month',
       }
-      debugger
+      
     
       MP.api.ready(function() {
         var $monthly = $('<div></div>').appendTo('body');
@@ -103,6 +103,28 @@
         var firstPayment = MP.api.segment(firstPaymentEvent, null, params);
         
         var firstPaymentDate = MP.api.query(insightsEndpoint, insightsParams)
+        var currentDate = moment(from);
+        var monthlyPromises = []
+        var mnthlyParams = {
+          from: moment().subtract(1, 'months'),
+          to: moment(),
+          unit: 'day',                      // specifies the the bucket size; can be 'day' or 'week'
+          interval_count: 1,                // the number of desired units
+          limit: 100,                       // maximum number of results to return
+
+    // the following are undefined by default
+          born_event: '$signup',             
+          where: ''
+      };
+      
+      var whereStr = 'not "flurry" in string(properties["origin"]) and (string(properties["mp_country_code"]) != "CN") and (string(properties["$browser"]) == "Chrome") and boolean(user["is_invited_user"]) == true'
+        while (currentDate < moment()) {
+          mnthlyParams.from = currentDate
+          mnthlyParams.to = currentDate.add(1, 'month')
+          debugger
+          mnthlyParams.where = whereStr + "2014-01" in string(user["Event Integration"])
+          monthlyPromises.push()
+        }
         
       $.when(homepage, signups, firstPaymentDate).done(
            function(homepage, signups, firstPaymentDateObj) {

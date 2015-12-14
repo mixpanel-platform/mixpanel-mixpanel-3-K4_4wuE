@@ -84,8 +84,6 @@
         var $qtrly = $('<div></div>').appendTo('body');
         var $conversionMonthly = $('<div></div>').appendTo('body');
         var $conversionQtrly = $('<div></div>').appendTo('body');
-        var $firstPaymentDate = $('<div></div>').appendTo('body');
-        var $firstPaymentDateQtrly = $('<div></div>').appendTo('body');
         
         var homepageEvent = 'homepage new';
         var homepage = MP.api.segment(homepageEvent, null, params );
@@ -97,12 +95,17 @@
         
         var firstPaymentDate = MP.api.query(insightsEndpoint, insightsParams)
         
-      $.when(homepage, signups, firstPayment, firstPaymentDate).done(
-           function(homepage, signups, firstPayment, firstPaymentDateObj) {
-              var firstPaymentDate = MP.Data.inst({'First Payment Date by User': firstPaymentDateObj.results})
+      $.when(homepage, signups, firstPaymentDate).done(
+           function(homepage, signups, firstPaymentDateObj) {
+              var firstPayment = MP.Data.inst({firstPaymentEvent: firstPaymentDateObj.results})
               debugger
               var signupConv = {"Sign up Conversion" : conversion(signups, signupEvent, homepage, homepageEvent) }
+              
+              // replace this with the first payment insights request
               var firstPaymentConv = { "First Payment Conversion" : conversion(firstPayment, firstPaymentEvent, signups, signupEvent)}
+              // for each month request signup where people first integration == month same not invited stuff
+              // signup -> viewed report for each month where event integration is in the month and as a funnel 7 and 30 days
+              // for each month where signup -> viewed where month '2013-01' includes, 7 and 30 day retention
               
               var signupQtrly = MP.Data.inst(qtrly(signups, signupEvent))
               var homepageQtrly = MP.Data.inst(qtrly(homepage, homepageEvent))
@@ -110,11 +113,7 @@
               
               var signupQtrlyConversion = {"Sign up Conversion" : conversion(signupQtrly, signupEvent, homepageQtrly, homepageEvent) }
               var firstPaymentQtrlyConversion = { "First Payment Conversion" : conversion(firstPaymentQtrly, firstPaymentEvent, signupQtrly, signupEvent)}
-              
-              var firstPaymentDateQtrly = qtrly(firstPaymentDate, 'First Payment Date By User')
-              $monthly.MPChart({
-                  chartType: 'line'
-              });
+
         
               $qtrly.MPChart({
                   chartType: 'line'
@@ -128,14 +127,7 @@
                   chartType: 'line'
               });
               
-              $firstPaymentDate.MPChart({
-                  chartType: 'line'
-              });
-              
-              $firstPaymentDateQtrly.MPChart({
-                  chartType: 'line'
-              });
-               
+
                
               var myFilter = function(val) {
                 return val > 0;
@@ -151,13 +143,9 @@
               
               $conversionMonthly.MPChart('addSeries', signupConv)
               $conversionMonthly.MPChart('addSeries', firstPaymentConv)
-
+              
               $conversionQtrly.MPChart('addSeries', signupQtrlyConversion)
               $conversionQtrly.MPChart('addSeries', firstPaymentQtrlyConversion)
-              
-              $firstPaymentDate.MPChart('addSeries', firstPaymentDate)
-              $firstPaymentDateQtrly.MPChart('addSeries', firstPaymentDateQtrly)
-              
            });
       });
     </script>

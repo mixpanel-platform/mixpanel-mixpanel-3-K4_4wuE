@@ -137,9 +137,10 @@
         tmpthirty = 0
         for (promise in promises) {
           debugger
-          for (date in promises[promise]) {
-            tmpseven += date.undefined.counts[6] || 0;
-            tmpthirty += date.undefined.counts[29] || 0;
+          var results = promises[promise].json
+          for (date in results) {
+            tmpseven += results[date]['undefined']['counts'][6] || 0;
+            tmpthirty += date[date]['undefined']['counts'][29] || 0;
           }
           tmpseven = 0
           tmpthirty = 0

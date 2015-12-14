@@ -109,8 +109,7 @@
         var monthlyPromises = []
         var mnthlyParams = {
           unit: 'day',                      // specifies the the bucket size; can be 'day' or 'week'
-          interval_count: 1,                // the number of desired units
-          limit: 100,                       // maximum number of results to return
+          interval_count: 30,                // the number of desired units
           born_event: '$signup',             
           where: ''
       };
@@ -123,7 +122,7 @@
         mnthlyParams.to = moment(from).add(monthsBack, 'month')
         monthsBack--
         mnthlyParams.from = moment(from).add(monthsBack, 'month')
-        currentMonth = moment(from).subtract(monthsBack, 'month').toISOString().slice(0,7)
+        currentMonth = moment(from).add(monthsBack, 'month').toISOString().slice(0,7)
         mnthlyParams.where = whereStr + '"' + currentMonth + '"' + ' in string(user["Event Integration"])'
         monthlyPromises.push(MP.api.retention('Viewed Report', mnthlyParams))
       }

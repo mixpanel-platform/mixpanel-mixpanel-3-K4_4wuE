@@ -117,10 +117,10 @@
       debugger
       var monthsBack = 24
       while ( monthsBack ) {
-        mnthlyParams.from = moment().subtract(monthsBack, 'month')
-        mnthlyParams.where = whereStr + moment().subtract(monthsBack, 'month').toISOString().slice(0,7) + ' in string(user["Event Integration"])'
+        mnthlyParams.from = moment(from).add(monthsBack, 'month')
+        mnthlyParams.where = whereStr + moment(from).subtract(monthsBack, 'month').toISOString().slice(0,7) + ' in string(user["Event Integration"])'
         monthsBack--
-        mnthlyParams.to = moment().subtract(monthsBack, 'month')
+        mnthlyParams.to = moment(from).add(monthsBack, 'month')
         
         monthlyPromises.push(MP.api.retention('Viewed Report', mnthlyParams))
       }

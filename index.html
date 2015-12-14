@@ -97,7 +97,7 @@
         
       $.when(homepage, signups, firstPaymentDate).done(
            function(homepage, signups, firstPaymentDateObj) {
-              var firstPayment = MP.Data.inst({firstPaymentEvent: firstPaymentDateObj.results})
+              var firstPayment = MP.Data.inst({'$custom_event:56005': firstPaymentDateObj.results})
               var signupConv = {"Sign up Conversion" : conversion(signups, signupEvent, homepage, homepageEvent) }
               
               // replace this with the first payment insights request

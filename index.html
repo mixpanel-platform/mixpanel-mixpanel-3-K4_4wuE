@@ -95,6 +95,7 @@
         var $qtrly = $('<div></div>').appendTo('body');
         var $conversionMonthly = $('<div></div>').appendTo('body');
         var $conversionQtrly = $('<div></div>').appendTo('body');
+        var $eventIntegration = $('<div></div>').appendTo('body');
         
         var homepageEvent = 'homepage new';
         var homepage = MP.api.segment(homepageEvent, null, params );
@@ -131,10 +132,10 @@
       }
       
       Promise.all(monthlyPromises).then(function(promises){
-        sevenday = {}
-        thirtyday = {}
-        tmpseven = 0
-        tmpthirty = 0
+        var sevenday = {}
+        var thirtyday = {}
+        var tmpseven = 0
+        var tmpthirty = 0
         for (promise in promises) {
           debugger
           var results = promises[promise].json
@@ -146,8 +147,16 @@
           thirtyday[date] = tmpthirty;
           tmpseven = 0;
           tmpthirty = 0;
+      
+        
+          $eventIntegration.MPChart({
+              chartType: 'line'
+          });
+          $eventIntegration.MPChart('addSeries', sevenday);
+          $eventIntegration.MPChart('addSeries', thirtyday);
           
         }
+        
       })
         
       $.when(homepage, signups, firstPaymentDate).done(

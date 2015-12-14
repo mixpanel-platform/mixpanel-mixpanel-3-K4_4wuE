@@ -119,7 +119,7 @@
       };
       
       var whereStr = 'not "flurry" in string(properties["origin"]) and (string(properties["mp_country_code"]) != "CN") and (string(properties["$browser"]) == "Chrome") and boolean(user["is_invited_user"]) == false and '
-      var monthsBack = 2
+      var monthsBack = 36;
       var currentMonth;
       
       while ( monthsBack ) {
@@ -137,7 +137,6 @@
         var tmpseven = 0
         var tmpthirty = 0
         for (promise in promises) {
-          debugger
           var results = promises[promise].json
           for (date in results) {
             tmpseven += results[date]['undefined']['counts'][6] || 0;

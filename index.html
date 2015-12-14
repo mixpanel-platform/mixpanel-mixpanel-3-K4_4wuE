@@ -75,8 +75,6 @@
         to: moment(),
         type: 'unique',
         unit: unit,
-        born_where: 'user["is_invited_user"] == false',
-        born_on: 'user["is_invited_user"]',
         where: 'not "flurry" in string(properties["origin"]) and (string(properties["mp_country_code"]) != "CN") and (string(properties["$browser"]) == "Chrome") and boolean(user["is_invited_user"]) == false'
       };
       
@@ -112,6 +110,8 @@
         var mnthlyParams = {
           unit: 'day',                      // specifies the the bucket size; can be 'day' or 'week'
           interval_count: 30,                // the number of desired units
+          born_where: 'user["is_invited_user"] == false',
+          born_on: 'user["is_invited_user"]',
           born_event: '$signup',             
           where: ''
       };

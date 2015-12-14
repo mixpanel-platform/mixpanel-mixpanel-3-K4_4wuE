@@ -99,7 +99,7 @@
         
       $.when(homepage, signups, firstPayment, firstPaymentDate).done(
            function(homepage, signups, firstPayment, firstPaymentDateObj) {
-              var firstPaymentDate = MP.Data.inst(firstPaymentDateObj.results)
+              var firstPaymentDate = MP.Data.inst({'First Payment Date by User': firstPaymentDateObj.results)
               debugger
               var signupConv = {"Sign up Conversion" : conversion(signups, signupEvent, homepage, homepageEvent) }
               var firstPaymentConv = { "First Payment Conversion" : conversion(firstPayment, firstPaymentEvent, signups, signupEvent)}
@@ -111,7 +111,7 @@
               var signupQtrlyConversion = {"Sign up Conversion" : conversion(signupQtrly, signupEvent, homepageQtrly, homepageEvent) }
               var firstPaymentQtrlyConversion = { "First Payment Conversion" : conversion(firstPaymentQtrly, firstPaymentEvent, signupQtrly, signupEvent)}
               
-              var firstPaymentDateQtrly = qtrly(firstPaymentDate, 'First Payment Date')
+              var firstPaymentDateQtrly = qtrly(firstPaymentDate, 'First Payment Date By User')
               $monthly.MPChart({
                   chartType: 'line'
               });

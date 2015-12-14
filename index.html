@@ -110,7 +110,7 @@
         var mnthlyParams = {
           unit: 'day',                      // specifies the the bucket size; can be 'day' or 'week'
           interval_count: 30,                // the number of desired units
-          born_where: 'user["is_invited_user"] == false',
+          born_where: 'not defined (user["is_invited_user"])',
           born_on: 'user["is_invited_user"]',
           born_event: '$signup',
           segment_method: 'first',

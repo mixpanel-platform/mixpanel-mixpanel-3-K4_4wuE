@@ -118,8 +118,8 @@
       var currentDate = moment(from);
       while (currentDate < moment()) {
         mnthlyParams.from = currentDate.toDate()
-        mnthlyParams.where = whereStr + currentDate.year()+ '-' + (currentDate.month() + 1) + 'in string(user["Event Integration"])'
-        mnthlyParams.to = currentDate.add(1, 'month')
+        mnthlyParams.where = whereStr + currentDate.year()+ '-' + (currentDate.month() + 1) + ' in string(user["Event Integration"])'
+        mnthlyParams.to = currentDate.add(1, 'month').toDate()
         monthlyPromises.push(MP.api.retention('Viewed Report', mnthlyParams))
       }
       

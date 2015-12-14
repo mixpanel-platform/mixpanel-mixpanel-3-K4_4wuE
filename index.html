@@ -115,7 +115,7 @@
       
       var whereStr = 'not "flurry" in string(properties["origin"]) and (string(properties["mp_country_code"]) != "CN") and (string(properties["$browser"]) == "Chrome") and boolean(user["is_invited_user"]) == true and '
       debugger
-      var monthsBack = 24
+      var monthsBack = 36
       while ( monthsBack ) {
         mnthlyParams.to = moment(from).add(monthsBack, 'month')
         monthsBack--

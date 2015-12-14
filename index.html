@@ -114,7 +114,10 @@
               var signupQtrlyConversion = {"Sign up Conversion" : conversion(signupQtrly, signupEvent, homepageQtrly, homepageEvent) }
               var firstPaymentQtrlyConversion = { "First Payment Conversion" : conversion(firstPaymentQtrly, firstPaymentEvent, signupQtrly, signupEvent)}
 
-        
+              $monthly.MPChart({
+                  chartType: 'line'
+              });
+              
               $qtrly.MPChart({
                   chartType: 'line'
               });
@@ -127,7 +130,6 @@
                   chartType: 'line'
               });
               
-
                
               var myFilter = function(val) {
                 return val > 0;

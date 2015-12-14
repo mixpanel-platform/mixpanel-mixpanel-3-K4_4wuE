@@ -37,7 +37,7 @@
       function insightsConversion(results) {
         var newResult = {};
         for (result in results){
-          var date = new Date(result)
+          var date = result.split('T')[0]
           debugger
           newResult[result] = results[result]['$total'];
         }

@@ -86,7 +86,7 @@
         to: moment(),
         x_unit: 'month',
       }
-      
+      debugger
     
       MP.api.ready(function() {
         var $monthly = $('<div></div>').appendTo('body');
@@ -109,9 +109,8 @@
               var firstPayment = MP.Data.inst({'$custom_event:56005': insightsConversion(firstPaymentDateObj.results)})
               var signupConv = {'Sign up Conversion' : conversion(signups, signupEvent, homepage, homepageEvent) }
               
-              // replace this with the first payment insights request
-              debugger
               var firstPaymentConv = { 'First Payment Conversion' : conversion(firstPayment, firstPaymentEvent, signups, signupEvent)}
+              
               // for each month request signup where people first integration == month same not invited stuff
               // signup -> viewed report for each month where event integration is in the month and as a funnel 7 and 30 days
               // for each month where signup -> viewed where month '2013-01' includes, 7 and 30 day retention
@@ -121,6 +120,7 @@
               var firstPaymentQtrly = MP.Data.inst(qtrly(firstPayment, firstPaymentEvent))
               
               var signupQtrlyConversion = {'Sign up Conversion' : conversion(signupQtrly, signupEvent, homepageQtrly, homepageEvent) }
+              
               var firstPaymentQtrlyConversion = { 'First Payment Conversion' : conversion(firstPaymentQtrly, firstPaymentEvent, signupQtrly, signupEvent)}
 
               $monthly.MPChart({

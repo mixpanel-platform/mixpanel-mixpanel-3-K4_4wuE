@@ -69,14 +69,14 @@
         where: 'not "flurry" in string(properties["origin"]) and (string(properties["mp_country_code"]) != "CN") and (string(properties["$browser"]) == "Chrome") and boolean(user["is_invited_user"]) == true'
       };
       
-      // var insightsEndpoint = 'api/2.0/engage/analytics'
-      // var insightsParams = {
-      //   x_segment: 'first payment date',
-      //   x_type: 'datetime',
-      //   from_date: from,
-      //   to_date:moment(),
-      //   x_unit: 'day',
-      // }
+      var insightsEndpoint = 'api/2.0/engage/analytics'
+      var insightsParams = {
+        x_segment: 'first payment date',
+        x_type: 'datetime',
+        from: from,
+        to: moment(),
+        x_unit: 'day',
+      }
       
     
       MP.api.ready(function() {

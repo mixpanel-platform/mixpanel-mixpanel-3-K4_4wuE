@@ -127,10 +127,10 @@
       var currentMonth;
       
       while ( monthsBack ) {
-        mnthlyParams.to = moment(from).add(monthsBack, 'month').subtract(1, 'day')
+        //mnthlyParams.to = moment(from).add(monthsBack, 'month').subtract(1, 'day')
         monthsBack--
-        mnthlyParams.from = moment(from).add(monthsBack, 'month')
-        currentMonth = moment(from).add(monthsBack, 'month').toISOString().slice(0,7)
+        //mnthlyParams.from = moment(from).add(monthsBack, 'month')
+        currentMonth = 'foo' //moment(from).add(monthsBack, 'month').toISOString().slice(0,7)
         mnthlyParams.where = whereStr + '"' + currentMonth + '"' + ' in string(user["Event Integration"])'
         monthlyPromises.push(MP.api.retention.apply(MP.api, ['Viewed report', mnthlyParams]))
       }

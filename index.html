@@ -132,7 +132,7 @@
         mnthlyParams.from = moment(from).add(monthsBack, 'month')
         currentMonth = moment(from).add(monthsBack, 'month').toISOString().slice(0,7)
         nextMonth = moment(from).add(monthsBack + 1, 'month').toISOString().slice(0,7)
-        mnthlyParams.where = whereStr + '"' + currentMonth + '" in string(user["Event Integration"]) or "' + nexttMonth + '" in string(user["Event Integration"])'
+        mnthlyParams.where = whereStr + '"' + currentMonth + '" in string(user["Event Integration"]) or "' + nextMonth + '" in string(user["Event Integration"])'
         monthlyPromises.push(MP.api.retention.apply(MP.api, ['Viewed report', mnthlyParams]))
       }
       

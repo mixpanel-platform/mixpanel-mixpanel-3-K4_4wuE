@@ -132,7 +132,7 @@
         mnthlyParams.from = moment(from).add(monthsBack, 'month')
         currentMonth = moment(from).add(monthsBack, 'month').toISOString().slice(0,7)
         mnthlyParams.where = whereStr + '"' + currentMonth + '"' + ' in string(user["Event Integration"])'
-        monthlyPromises.push(MP.api.retention('Viewed report', mnthlyParams))
+        monthlyPromises.push(MP.api.retention.apply(MP.api, ['Viewed report', mnthlyParams]))
       }
       
       Promise.all(monthlyPromises).then(function(promises){

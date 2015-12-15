@@ -132,8 +132,8 @@
       }
       
       Promise.all(monthlyPromises).then(function(promises){
-        var sevenday = {}
-        var thirtyday = {}
+        var sevenday = {sevenDay: {} }
+        var thirtyday = {thirtyDay: {} }
         var tmpseven = 0
         var tmpthirty = 0
         for (promise in promises) {
@@ -142,8 +142,8 @@
             tmpseven += results[date]['undefined']['counts'][6] || 0;
             tmpthirty += results[date]['undefined']['counts'][29] || 0;
           }
-          sevenday[date] = tmpseven;
-          thirtyday[date] = tmpthirty;
+          sevenday['sevenDay'][date] = tmpseven;
+          thirtyday['thirtyDay'][date] = tmpthirty;
           tmpseven = 0;
           tmpthirty = 0;
       
@@ -151,12 +151,10 @@
           $eventIntegration.MPChart({
               chartType: 'line'
           });
-          debugger
-          $eventIntegration.MPChart('addSeries', sevenday);
-          $eventIntegration.MPChart('addSeries', thirtyday);
-          
         }
-        
+        debugger
+        $eventIntegration.MPChart('addSeries', sevenday);
+        $eventIntegration.MPChart('addSeries', thirtyday);
       })
         
       $.when(homepage, signups, firstPaymentDate).done(

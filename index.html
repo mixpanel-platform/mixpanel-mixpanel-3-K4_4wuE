@@ -27,6 +27,10 @@
         return d.slice(0,4)
       }
       
+      function firstOfMonth(d){
+        return getYear(d) + '-' + getMonth(d) + '-01'
+      }
+      
       function qtr(dateStr){
         var qtr = getQuarter(dateStr);
         var year = getYear(dateStr);
@@ -123,7 +127,7 @@
       var currentMonth;
       
       while ( monthsBack ) {
-        mnthlyParams.to = moment(from).add(monthsBack, 'month')
+        mnthlyParams.to = moment(from).add(monthsBack, 'month').subtract(1, 'day')
         monthsBack--
         mnthlyParams.from = moment(from).add(monthsBack, 'month')
         currentMonth = moment(from).add(monthsBack, 'month').toISOString().slice(0,7)
@@ -142,6 +146,7 @@
             tmpseven += results[date]['undefined']['counts'][6] || 0;
             tmpthirty += results[date]['undefined']['counts'][29] || 0;
           }
+          var dateStr = firstOfMonth(date) 
           sevenday['sevenDay'][date] = tmpseven;
           thirtyday['thirtyDay'][date] = tmpthirty;
           tmpseven = 0;

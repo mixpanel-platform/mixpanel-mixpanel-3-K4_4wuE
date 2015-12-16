@@ -109,7 +109,7 @@
         var signupEvent = '$signup'
         var signups = MP.api.segment(signupEvent, null, notInvParams);
         var integrationDate = {
-          where: '(string(user["Origin"]) != "invite") and (string(properties["$browser"]) == "Chrome") and (string(properties["mp_country_code"]) != "CN") and not "flurry" in string(user["Origin"]) and datetime(user["first integration date"]) >= datetime(' + from + ') and datetime(user["first integration date"]) < datetime(' + moment() + ')'}
+          where: '(string(user["Origin"]) != "invite") and (string(properties["$browser"]) == "Chrome") and (string(properties["mp_country_code"]) != "CN") and not "flurry" in string(user["Origin"]) and datetime(user["first integration date"]) >= datetime(' + moment(from) + ') and datetime(user["first integration date"]) < datetime(' + moment() + ')'}
         var integrationParams = _.extend({}, notInvParams, integrationDate )
         var signupsIntegrated =  MP.api.segment(signupEvent, null, integrationParams);
         var badgeAdded = MP.api.segment('badge added', {from: from, to: moment()})

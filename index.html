@@ -61,7 +61,7 @@
             }
             qtrResults[eventName][qtrStr] += queryResults.json[eventName][date]
           }
-          return qtrResults
+          return MP.Data.inst(qtrResults)
       }
       
       var from = '2013-01-01'
@@ -94,6 +94,8 @@
     
       MP.api.ready(function() {
         // ;)
+        // add badge added event no filter
+        // add https://mixpanel.com/report/3/segmentation/#action:segment,arb_event:'$signup',bool_op:and,chart_analysis_type:linear,chart_type:line,from_date:-1078,ms_checked:('$signup':!t),ms_values:!('$signup'),segfilter:!((filter:(operand:!(invite),operator:'!!%3D'),property:(name:Origin,source:user,type:string),selected_property_type:string,type:string),(filter:(operand:!(Chrome),operator:%3D%3D),property:(name:'$browser',source:properties,type:string),selected_property_type:string,type:string),(filter:(operand:!(CN),operator:'!!%3D'),property:(name:mp_country_code,source:properties,type:string),selected_property_type:string,type:string),(filter:(operand:flurry,operator:'not%20in'),property:(name:Origin,source:user,type:string),selected_property_type:string,type:string),(filter:(operand:!('1/1/2013','12/15/2015'),operator:%3E%3C,unit:days),property:(name:'first%20integration%20date',source:user,type:datetime),selected_property_type:datetime,type:datetime)),to_date:-348,type:unique,unit:month
         MP.api.MAX_SIMULTANEOUS_QUERIES = 36
         var $monthly = $('<div></div>').appendTo('body');
         var $qtrly = $('<div></div>').appendTo('body');
@@ -103,8 +105,15 @@
         
         var homepageEvent = 'homepage new';
         var homepage = MP.api.segment(homepageEvent, null, params );
+       
         var signupEvent = '$signup'
         var signups = MP.api.segment(signupEvent, null, notInvParams);
+        var integrationDate = {
+          where: '(string(user["Origin"]) != "invite") and (string(properties["$browser"]) == "Chrome") and (string(properties["mp_country_code"]) != "CN") and not "flurry" in string(user["Origin"]) and datetime(user["first integration date"]) >= datetime(' + from + ') and datetime(user["first integration date"]) < datetime(' + moment() + ')'}
+        var integrationParams = _.extend({}, notInvParams, integrationDate )
+        var signupsIntegrated =  MP.api.segment(signupEvent, null, integrationParams);
+        var badgeAdded = MP.api.segment('badge added', {from: from, to: moment()})
+        
         
         var firstPaymentEvent = '$custom_event:56005'
         var firstPayment = MP.api.segment(firstPaymentEvent, null, params);
@@ -122,7 +131,7 @@
           where: ''
       };
       
-      var whereStr = 'boolean(user["is_invited_user"]) == false and ' //'not "flurry" in string(properties["origin"]) and (string(properties["mp_country_code"]) != "CN") and (string(properties["$browser"]) == "Chrome") and boolean(user["is_invited_user"]) == false and '
+      var whereStr = 'boolean(user["is_invited_user"]) == false and '
       var monthsBack = 36;
       var currentMonth;
       
@@ -162,20 +171,18 @@
         $eventIntegration.MPChart('addSeries', thirtyday);
       })
         
-      $.when(homepage, signups, firstPaymentDate).done(
-           function(homepage, signups, firstPaymentDateObj) {
+      $.when(homepage, signups, signupsIntegrated, firstPaymentDate, badgeAdded).done(
+           function(homepage, signups, signupsIntegrated, firstPaymentDateObj, badgeAdded) {
               var firstPayment = MP.Data.inst({'$custom_event:56005': insightsConversion(firstPaymentDateObj.results)})
               var signupConv = {'Sign up Conversion' : conversion(signups, signupEvent, homepage, homepageEvent) }
               
               var firstPaymentConv = { 'First Payment Conversion' : conversion(firstPayment, firstPaymentEvent, signups, signupEvent)}
               
-              // for each month request signup where people first integration == month same not invited stuff
-              // signup -> viewed report for each month where event integration is in the month and as a funnel 7 and 30 days
-              // for each month where signup -> viewed where month '2013-01' includes, 7 and 30 day retention
-              
-              var signupQtrly = MP.Data.inst(qtrly(signups, signupEvent))
-              var homepageQtrly = MP.Data.inst(qtrly(homepage, homepageEvent))
-              var firstPaymentQtrly = MP.Data.inst(qtrly(firstPayment, firstPaymentEvent))
+              var signupQtrly = qtrly(signups, signupEvent)
+              var homepageQtrly = qtrly(homepage, homepageEvent)
+              var firstPaymentQtrly = qtrly(firstPayment, firstPaymentEvent)
+              var signupIntegrationsQtrly = qtrly(signupsIntegrated, signupEvent)
+              var badgeAddedQtrly = qtrly(badgeAdded, 'badge added')
               
               var signupQtrlyConversion = {'Sign up Conversion' : conversion(signupQtrly, signupEvent, homepageQtrly, homepageEvent) }
               
@@ -205,10 +212,14 @@
               $monthly.MPChart('addSeries', homepage.filter(myFilter));
               $monthly.MPChart('addSeries', signups.filter(myFilter));
               $monthly.MPChart('addSeries', firstPayment.filter(myFilter));
+              $monthly.MPChart('addSeries', signupsIntegrated.filter(myFilter));
+              $monthly.MPChart('addSeries', badgeAdded.filter(myFilter));
               
               $qtrly.MPChart('addSeries', signupQtrly.filter(myFilter));
               $qtrly.MPChart('addSeries', homepageQtrly.filter(myFilter));
               $qtrly.MPChart('addSeries', firstPaymentQtrly.filter(myFilter));
+              $qtrly.MPChart('addSeries', signupIntegrationsQtrly.filter(myFilter));
+              $qtrly.MPChart('addSeries', badgeAddedQtrly.filter(myFilter));
               
               $conversionMonthly.MPChart('addSeries', signupConv)
               $conversionMonthly.MPChart('addSeries', firstPaymentConv)

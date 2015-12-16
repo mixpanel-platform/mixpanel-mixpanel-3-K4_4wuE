@@ -91,44 +91,55 @@
         x_unit: 'month',
       }
       
+         
+      var badgeParams = {
+        from: from, 
+        to: moment(),
+        type: unique,
+        unit: month,
+      }
+      
+      var integrationDate = {
+        where: '(string(user["Origin"]) != "invite") and (string(properties["$browser"]) == "Chrome") and (string(properties["mp_country_code"]) != "CN") and not "flurry" in string(user["Origin"]) and datetime(user["first integration date"]) >= datetime(' + moment(from) + ') and datetime(user["first integration date"]) < datetime(' + moment() + ')'
+      }
+      
     
-      MP.api.ready(function() {
-        // ;)
-        // add badge added event no filter
-        // add https://mixpanel.com/report/3/segmentation/#action:segment,arb_event:'$signup',bool_op:and,chart_analysis_type:linear,chart_type:line,from_date:-1078,ms_checked:('$signup':!t),ms_values:!('$signup'),segfilter:!((filter:(operand:!(invite),operator:'!!%3D'),property:(name:Origin,source:user,type:string),selected_property_type:string,type:string),(filter:(operand:!(Chrome),operator:%3D%3D),property:(name:'$browser',source:properties,type:string),selected_property_type:string,type:string),(filter:(operand:!(CN),operator:'!!%3D'),property:(name:mp_country_code,source:properties,type:string),selected_property_type:string,type:string),(filter:(operand:flurry,operator:'not%20in'),property:(name:Origin,source:user,type:string),selected_property_type:string,type:string),(filter:(operand:!('1/1/2013','12/15/2015'),operator:%3E%3C,unit:days),property:(name:'first%20integration%20date',source:user,type:datetime),selected_property_type:datetime,type:datetime)),to_date:-348,type:unique,unit:month
-        MP.api.MAX_SIMULTANEOUS_QUERIES = 36
-        var $monthly = $('<div></div>').appendTo('body');
-        var $qtrly = $('<div></div>').appendTo('body');
-        var $conversionMonthly = $('<div></div>').appendTo('body');
-        var $conversionQtrly = $('<div></div>').appendTo('body');
-        var $eventIntegration = $('<div></div>').appendTo('body');
-        
-        var homepageEvent = 'homepage new';
-        var homepage = MP.api.segment(homepageEvent, null, params );
-       
-        var signupEvent = '$signup'
-        var signups = MP.api.segment(signupEvent, null, notInvParams);
-        var integrationDate = {
-          where: '(string(user["Origin"]) != "invite") and (string(properties["$browser"]) == "Chrome") and (string(properties["mp_country_code"]) != "CN") and not "flurry" in string(user["Origin"]) and datetime(user["first integration date"]) >= datetime(' + moment(from) + ') and datetime(user["first integration date"]) < datetime(' + moment() + ')'}
-        var integrationParams = _.extend({}, notInvParams, integrationDate )
-        var signupsIntegrated =  MP.api.segment(signupEvent, null, integrationParams);
-        var badgeAdded = MP.api.segment('badge added', {from: from, to: moment()})
-        
-        
-        var firstPaymentEvent = '$custom_event:56005'
-        var firstPayment = MP.api.segment(firstPaymentEvent, null, params);
-        
-        var firstPaymentDate = MP.api.query(insightsEndpoint, insightsParams)
+      // ;)
+      // add badge added event no filter
+      // add https://mixpanel.com/report/3/segmentation/#action:segment,arb_event:'$signup',bool_op:and,chart_analysis_type:linear,chart_type:line,from_date:-1078,ms_checked:('$signup':!t),ms_values:!('$signup'),segfilter:!((filter:(operand:!(invite),operator:'!!%3D'),property:(name:Origin,source:user,type:string),selected_property_type:string,type:string),(filter:(operand:!(Chrome),operator:%3D%3D),property:(name:'$browser',source:properties,type:string),selected_property_type:string,type:string),(filter:(operand:!(CN),operator:'!!%3D'),property:(name:mp_country_code,source:properties,type:string),selected_property_type:string,type:string),(filter:(operand:flurry,operator:'not%20in'),property:(name:Origin,source:user,type:string),selected_property_type:string,type:string),(filter:(operand:!('1/1/2013','12/15/2015'),operator:%3E%3C,unit:days),property:(name:'first%20integration%20date',source:user,type:datetime),selected_property_type:datetime,type:datetime)),to_date:-348,type:unique,unit:month
+      MP.api.MAX_SIMULTANEOUS_QUERIES = 36
+      var $monthly = $('<div></div>').appendTo('body');
+      var $qtrly = $('<div></div>').appendTo('body');
+      var $conversionMonthly = $('<div></div>').appendTo('body');
+      var $conversionQtrly = $('<div></div>').appendTo('body');
+      var $eventIntegration = $('<div></div>').appendTo('body');
+      
+      var homepageEvent = 'homepage new';
+      var homepage = MP.api.segment(homepageEvent, null, params );
+     
+      var signupEvent = '$signup'
+      var signups = MP.api.segment(signupEvent, null, notInvParams);
+   
+      var integrationParams = _.extend({}, notInvParams, integrationDate )
+      var signupsIntegrated =  MP.api.segment(signupEvent, null, integrationParams);
+   
+      var badgeAdded = MP.api.segment('badge added', null, badgeParams)
+      
+      
+      var firstPaymentEvent = '$custom_event:56005'
+      var firstPayment = MP.api.segment(firstPaymentEvent, null, params);
+      
+      var firstPaymentDate = MP.api.query(insightsEndpoint, insightsParams)
 
-        var monthlyPromises = []
-        var mnthlyParams = {
-          unit: 'day',                      // specifies the the bucket size; can be 'day' or 'week'
-          interval_count: 30,                // the number of desired units
-          born_where: 'not defined (user["is_invited_user"])',
-          born_on: 'user["is_invited_user"]',
-          born_event: '$signup',
-          segment_method: 'first',
-          where: ''
+      var monthlyPromises = []
+      var mnthlyParams = {
+        unit: 'day',                      // specifies the the bucket size; can be 'day' or 'week'
+        interval_count: 30,                // the number of desired units
+        born_where: 'not defined (user["is_invited_user"])',
+        born_on: 'user["is_invited_user"]',
+        born_event: '$signup',
+        segment_method: 'first',
+        where: ''
       };
       
       var whereStr = 'boolean(user["is_invited_user"]) == false and '
@@ -172,62 +183,61 @@
       })
         
       $.when(homepage, signups, signupsIntegrated, firstPaymentDate, badgeAdded).done(
-           function(homepage, signups, signupsIntegrated, firstPaymentDateObj, badgeAdded) {
-              var firstPayment = MP.Data.inst({'$custom_event:56005': insightsConversion(firstPaymentDateObj.results)})
-              var signupConv = {'Sign up Conversion' : conversion(signups, signupEvent, homepage, homepageEvent) }
-              
-              var firstPaymentConv = { 'First Payment Conversion' : conversion(firstPayment, firstPaymentEvent, signups, signupEvent)}
-              
-              var signupQtrly = qtrly(signups, signupEvent)
-              var homepageQtrly = qtrly(homepage, homepageEvent)
-              var firstPaymentQtrly = qtrly(firstPayment, firstPaymentEvent)
-              var signupIntegrationsQtrly = qtrly(signupsIntegrated, signupEvent)
-              var badgeAddedQtrly = qtrly(badgeAdded, 'badge added')
-              
-              var signupQtrlyConversion = {'Sign up Conversion' : conversion(signupQtrly, signupEvent, homepageQtrly, homepageEvent) }
-              
-              var firstPaymentQtrlyConversion = { 'First Payment Conversion' : conversion(firstPaymentQtrly, firstPaymentEvent, signupQtrly, signupEvent)}
+        function(homepage, signups, signupsIntegrated, firstPaymentDateObj, badgeAdded) {
+          var firstPayment = MP.Data.inst({'$custom_event:56005': insightsConversion(firstPaymentDateObj.results)})
+          var signupConv = {'Sign up Conversion' : conversion(signups, signupEvent, homepage, homepageEvent) }
+          
+          var firstPaymentConv = { 'First Payment Conversion' : conversion(firstPayment, firstPaymentEvent, signups, signupEvent)}
+          
+          var signupQtrly = qtrly(signups, signupEvent)
+          var homepageQtrly = qtrly(homepage, homepageEvent)
+          var firstPaymentQtrly = qtrly(firstPayment, firstPaymentEvent)
+          var signupIntegrationsQtrly = qtrly(signupsIntegrated, signupEvent)
+          var badgeAddedQtrly = qtrly(badgeAdded, 'badge added')
+          
+          var signupQtrlyConversion = {'Sign up Conversion' : conversion(signupQtrly, signupEvent, homepageQtrly, homepageEvent) }
+          
+          var firstPaymentQtrlyConversion = { 'First Payment Conversion' : conversion(firstPaymentQtrly, firstPaymentEvent, signupQtrly, signupEvent)}
 
-              $monthly.MPChart({
-                  chartType: 'line'
-              });
-              
-              $qtrly.MPChart({
-                  chartType: 'line'
-              });
-        
-              $conversionMonthly.MPChart({
-                  chartType: 'line'
-              });
-              
-              $conversionQtrly.MPChart({
-                  chartType: 'line'
-              });
-              
-               
-              var myFilter = function(val) {
-                return val > 0;
-              };
+          $monthly.MPChart({
+              chartType: 'line'
+          });
+          
+          $qtrly.MPChart({
+              chartType: 'line'
+          });
+    
+          $conversionMonthly.MPChart({
+              chartType: 'line'
+          });
+          
+          $conversionQtrly.MPChart({
+              chartType: 'line'
+          });
+          
+           
+          var myFilter = function(val) {
+            return val > 0;
+          };
 
-              $monthly.MPChart('addSeries', homepage.filter(myFilter));
-              $monthly.MPChart('addSeries', signups.filter(myFilter));
-              $monthly.MPChart('addSeries', firstPayment.filter(myFilter));
-              $monthly.MPChart('addSeries', signupsIntegrated.filter(myFilter));
-              $monthly.MPChart('addSeries', badgeAdded.filter(myFilter));
-              
-              $qtrly.MPChart('addSeries', signupQtrly.filter(myFilter));
-              $qtrly.MPChart('addSeries', homepageQtrly.filter(myFilter));
-              $qtrly.MPChart('addSeries', firstPaymentQtrly.filter(myFilter));
-              $qtrly.MPChart('addSeries', signupIntegrationsQtrly.filter(myFilter));
-              $qtrly.MPChart('addSeries', badgeAddedQtrly.filter(myFilter));
-              
-              $conversionMonthly.MPChart('addSeries', signupConv)
-              $conversionMonthly.MPChart('addSeries', firstPaymentConv)
-              
-              $conversionQtrly.MPChart('addSeries', signupQtrlyConversion)
-              $conversionQtrly.MPChart('addSeries', firstPaymentQtrlyConversion)
-           });
-      });
+          $monthly.MPChart('addSeries', homepage.filter(myFilter));
+          $monthly.MPChart('addSeries', signups.filter(myFilter));
+          $monthly.MPChart('addSeries', firstPayment.filter(myFilter));
+          $monthly.MPChart('addSeries', signupsIntegrated.filter(myFilter));
+          $monthly.MPChart('addSeries', badgeAdded.filter(myFilter));
+          
+          $qtrly.MPChart('addSeries', signupQtrly.filter(myFilter));
+          $qtrly.MPChart('addSeries', homepageQtrly.filter(myFilter));
+          $qtrly.MPChart('addSeries', firstPaymentQtrly.filter(myFilter));
+          $qtrly.MPChart('addSeries', signupIntegrationsQtrly.filter(myFilter));
+          $qtrly.MPChart('addSeries', badgeAddedQtrly.filter(myFilter));
+          
+          $conversionMonthly.MPChart('addSeries', signupConv)
+          $conversionMonthly.MPChart('addSeries', firstPaymentConv)
+          
+          $conversionQtrly.MPChart('addSeries', signupQtrlyConversion)
+          $conversionQtrly.MPChart('addSeries', firstPaymentQtrlyConversion)
+       });
     </script>
   </body>
 </html>

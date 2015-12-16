@@ -122,7 +122,7 @@
           where: ''
       };
       
-      var whereStr = 'not "flurry" in string(properties["origin"]) and (string(properties["mp_country_code"]) != "CN") and (string(properties["$browser"]) == "Chrome") and boolean(user["is_invited_user"]) == false and '
+      var whereStr = 'boolean(user["is_invited_user"]) == false and ' //'not "flurry" in string(properties["origin"]) and (string(properties["mp_country_code"]) != "CN") and (string(properties["$browser"]) == "Chrome") and boolean(user["is_invited_user"]) == false and '
       var monthsBack = 36;
       var currentMonth;
       

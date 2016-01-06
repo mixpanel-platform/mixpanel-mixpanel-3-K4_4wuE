@@ -190,13 +190,13 @@
           var firstPayment = MP.Data.inst({'First Payment': insightsConversion(firstPaymentDateObj.results)})
           var signupConv = {'Sign up Conversion' : conversion(signups, signupEvent, homepage, homepageEvent) }
           var signupsIntegrated = MP.Data.inst({'Signups Integrated' : signupsIntData.json[signupEvent]})
+          debugger
           var firstPaymentConv = { 'First Payment Conversion' : conversion(firstPayment, 'First Payment', signups, signupEvent)}
           
           var signupQtrly = qtrly(signups, signupEvent)
           var homepageQtrly = qtrly(homepage, homepageEvent)
           var firstPaymentQtrly = qtrly(firstPayment, 'First Payment')
           
-          debugger
           var signupIntegrationsQtrly = qtrly(signupsIntegrated, 'Signups Integrated')
           var badgeAddedQtrly = qtrly(badgeAdded, 'badge added')
           

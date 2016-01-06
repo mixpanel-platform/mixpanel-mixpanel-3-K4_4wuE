@@ -51,7 +51,7 @@
          return  MP.Data.inst(dividend.values()[dividendEvent]).divide(MP.Data.inst(divisor.values()[divisorEvent])).json 
       }
       
-      function qtrly(queryResults, eventName, result = nil) {
+      function qtrly(queryResults, eventName, result) {
           var resultName= result || eventName
           var qtrResults = {}
           qtrResults[eventName] = {}

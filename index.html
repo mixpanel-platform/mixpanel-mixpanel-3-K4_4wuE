@@ -185,11 +185,11 @@
       })
         
       $.when(homepage, signups, signupsIntegrated, firstPaymentDate, badgeAdded).done(
-        function(homepage, signups, signupsIntegrated, firstPaymentDateObj, badgeAdded) {
+        function(homepage, signups, signupsIntData, firstPaymentDateObj, badgeAdded) {
           debugger
           var firstPayment = MP.Data.inst({'$custom_event:56005': insightsConversion(firstPaymentDateObj.results)})
           var signupConv = {'Sign up Conversion' : conversion(signups, signupEvent, homepage, homepageEvent) }
-          
+          var signupsIntegrated = MP.Data.inst({"Signups Integrated" : signupsIntData})
           var firstPaymentConv = { 'First Payment Conversion' : conversion(firstPayment, firstPaymentEvent, signups, signupEvent)}
           
           var signupQtrly = qtrly(signups, signupEvent)

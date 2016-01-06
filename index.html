@@ -51,15 +51,16 @@
          return  MP.Data.inst(dividend.values()[dividendEvent]).divide(MP.Data.inst(divisor.values()[divisorEvent])).json 
       }
       
-      function qtrly(queryResults, eventName) {
+      function qtrly(queryResults, eventName, result = nil) {
+          var resultName= result || eventName
           var qtrResults = {}
           qtrResults[eventName] = {}
           for (date in queryResults.values()[eventName]) {
             var qtrStr = qtr(date)
-            if (!qtrResults[eventName][qtrStr]){
-              qtrResults[eventName][qtrStr] = 0;
+            if (!qtrResults[resultName][qtrStr]){
+              qtrResults[resultName][qtrStr] = 0;
             }
-            qtrResults[eventName][qtrStr] += queryResults.json[eventName][date]
+            qtrResults[resultName][qtrStr] += queryResults.json[resultName][date]
           }
           return MP.Data.inst(qtrResults)
       }
@@ -187,14 +188,14 @@
       $.when(homepage, signups, signupsIntegrated, firstPaymentDate, badgeAdded).done(
         function(homepage, signups, signupsIntData, firstPaymentDateObj, badgeAdded) {
           debugger
-          var firstPayment = MP.Data.inst({'$custom_event:56005': insightsConversion(firstPaymentDateObj.results)})
+          var firstPayment = MP.Data.inst({'First Payment': insightsConversion(firstPaymentDateObj.results)})
           var signupConv = {'Sign up Conversion' : conversion(signups, signupEvent, homepage, homepageEvent) }
           var signupsIntegrated = MP.Data.inst({'Signups Integrated' : signupsIntData.json[signupEvent]})
           var firstPaymentConv = { 'First Payment Conversion' : conversion(firstPayment, firstPaymentEvent, signups, signupEvent)}
           
           var signupQtrly = qtrly(signups, signupEvent)
           var homepageQtrly = qtrly(homepage, homepageEvent)
-          var firstPaymentQtrly = qtrly(firstPayment, firstPaymentEvent)
+          var firstPaymentQtrly = qtrly(firstPayment, firstPaymentEvent, 'FirstPayment')
           var signupIntegrationsQtrly = qtrly(signupsIntegrated, 'Signups Integrated')
           var badgeAddedQtrly = qtrly(badgeAdded, 'badge added')
           

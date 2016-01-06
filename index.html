@@ -52,15 +52,15 @@
       }
       
       function qtrly(queryResults, eventName, result) {
-          var resultName= result || eventName
+          var resultName = result || eventName
           var qtrResults = {}
-          qtrResults[eventName] = {}
+          qtrResults[resultName] = {}
           for (date in queryResults.values()[eventName]) {
             var qtrStr = qtr(date)
             if (!qtrResults[resultName][qtrStr]){
               qtrResults[resultName][qtrStr] = 0;
             }
-            qtrResults[resultName][qtrStr] += queryResults.json[resultName][date]
+            qtrResults[resultName][qtrStr] += queryResults.json[eventName][date]
           }
           return MP.Data.inst(qtrResults)
       }

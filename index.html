@@ -190,7 +190,7 @@
           var firstPayment = MP.Data.inst({'First Payment': insightsConversion(firstPaymentDateObj.results)})
           var signupConv = {'Sign up Conversion' : conversion(signups, signupEvent, homepage, homepageEvent) }
           var signupsIntegrated = MP.Data.inst({'Signups Integrated' : signupsIntData.json[signupEvent]})
-          var firstPaymentConv = { 'First Payment Conversion' : conversion(firstPayment, firstPaymentEvent, signups, signupEvent)}
+          var firstPaymentConv = { 'First Payment Conversion' : conversion(firstPayment, 'First Payment', signups, signupEvent)}
           
           var signupQtrly = qtrly(signups, signupEvent)
           var homepageQtrly = qtrly(homepage, homepageEvent)
@@ -202,7 +202,7 @@
           
           var signupQtrlyConversion = {'Sign up Conversion' : conversion(signupQtrly, signupEvent, homepageQtrly, homepageEvent) }
           
-          var firstPaymentQtrlyConversion = { 'First Payment Conversion' : conversion(firstPaymentQtrly, firstPaymentEvent, signupQtrly, signupEvent)}
+          var firstPaymentQtrlyConversion = { 'First Payment Conversion' : conversion(firstPaymentQtrly, 'First Payment', signupQtrly, signupEvent)}
 
           $monthly.MPChart({
               chartType: 'line'

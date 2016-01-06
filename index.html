@@ -187,7 +187,6 @@
         
       $.when(homepage, signups, signupsIntegrated, firstPaymentDate, badgeAdded).done(
         function(homepage, signups, signupsIntData, firstPaymentDateObj, badgeAdded) {
-          debugger
           var firstPayment = MP.Data.inst({'First Payment': insightsConversion(firstPaymentDateObj.results)})
           var signupConv = {'Sign up Conversion' : conversion(signups, signupEvent, homepage, homepageEvent) }
           var signupsIntegrated = MP.Data.inst({'Signups Integrated' : signupsIntData.json[signupEvent]})
@@ -195,7 +194,9 @@
           
           var signupQtrly = qtrly(signups, signupEvent)
           var homepageQtrly = qtrly(homepage, homepageEvent)
-          var firstPaymentQtrly = qtrly(firstPayment, firstPaymentEvent, 'FirstPayment')
+          var firstPaymentQtrly = qtrly(firstPayment, firstPaymentEvent, 'First Payment')
+          
+          debugger
           var signupIntegrationsQtrly = qtrly(signupsIntegrated, 'Signups Integrated')
           var badgeAddedQtrly = qtrly(badgeAdded, 'badge added')
           

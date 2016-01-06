@@ -189,13 +189,13 @@
           debugger
           var firstPayment = MP.Data.inst({'$custom_event:56005': insightsConversion(firstPaymentDateObj.results)})
           var signupConv = {'Sign up Conversion' : conversion(signups, signupEvent, homepage, homepageEvent) }
-          var signupsIntegrated = MP.Data.inst({"Signups Integrated" : signupsIntData.json[signupEvent]})
+          var signupsIntegrated = MP.Data.inst({'Signups Integrated' : signupsIntData.json[signupEvent]})
           var firstPaymentConv = { 'First Payment Conversion' : conversion(firstPayment, firstPaymentEvent, signups, signupEvent)}
           
           var signupQtrly = qtrly(signups, signupEvent)
           var homepageQtrly = qtrly(homepage, homepageEvent)
           var firstPaymentQtrly = qtrly(firstPayment, firstPaymentEvent)
-          var signupIntegrationsQtrly = qtrly(signupsIntegrated, signupEvent)
+          var signupIntegrationsQtrly = qtrly(signupsIntegrated, 'Signups Integrated')
           var badgeAddedQtrly = qtrly(badgeAdded, 'badge added')
           
           var signupQtrlyConversion = {'Sign up Conversion' : conversion(signupQtrly, signupEvent, homepageQtrly, homepageEvent) }
@@ -236,20 +236,19 @@
           $monthly.MPChart('addSeries', signups.filter(myFilter));
           $monthly.MPChart('addSeries', firstPayment.filter(myFilter));
           $monthly.MPChart('addSeries', badgeAdded.filter(myFilter));
+          $monthly.MPChart('addSeries', signupsIntegrated.filter(myFilter));
           
-          $monthlySignups.MPChart('addSeries', signupsIntegrated.filter(myFilter));  
-          $qtrlySignups.MPChart('addSeries', signupIntegrationsQtrly.filter(myFilter));
-            
+          $qtrly.MPChart('addSeries', signupIntegrationsQtrly.filter(myFilter));
           $qtrly.MPChart('addSeries', signupQtrly.filter(myFilter));
           $qtrly.MPChart('addSeries', homepageQtrly.filter(myFilter));
           $qtrly.MPChart('addSeries', firstPaymentQtrly.filter(myFilter));
           $qtrly.MPChart('addSeries', badgeAddedQtrly.filter(myFilter));
           
-          $conversionMonthly.MPChart('addSeries', signupConv)
-          $conversionMonthly.MPChart('addSeries', firstPaymentConv)
+          $monthly.MPChart('addSeries', signupConv)
+          $monthly.MPChart('addSeries', firstPaymentConv)
           
-          $conversionQtrly.MPChart('addSeries', signupQtrlyConversion)
-          $conversionQtrly.MPChart('addSeries', firstPaymentQtrlyConversion)
+          $qtrly.MPChart('addSeries', signupQtrlyConversion)
+          $qtrly.MPChart('addSeries', firstPaymentQtrlyConversion)
        });
     </script>
   </body>

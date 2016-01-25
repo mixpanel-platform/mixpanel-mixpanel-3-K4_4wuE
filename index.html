@@ -65,7 +65,7 @@
           return MP.Data.inst(qtrResults)
       }
       
-      var from = moment().subtract(23, 'months').startOf('month')
+      var from = moment().subtract(12, 'months').startOf('month')
       var unit = 'month';
       var params = {
         from: from,
@@ -104,10 +104,6 @@
         where: '(string(user["Origin"]) != "invite") and (string(properties["$browser"]) == "Chrome") and (string(properties["mp_country_code"]) != "CN") and not "flurry" in string(user["Origin"]) and datetime(user["first integration date"]) >= datetime(' + moment(from) + ') and datetime(user["first integration date"]) < datetime(' + moment() + ')'
       }
       
-    
-      // ;)
-      // add badge added event no filter
-      // add https://mixpanel.com/report/3/segmentation/#action:segment,arb_event:'$signup',bool_op:and,chart_analysis_type:linear,chart_type:line,from_date:-1078,ms_checked:('$signup':!t),ms_values:!('$signup'),segfilter:!((filter:(operand:!(invite),operator:'!!%3D'),property:(name:Origin,source:user,type:string),selected_property_type:string,type:string),(filter:(operand:!(Chrome),operator:%3D%3D),property:(name:'$browser',source:properties,type:string),selected_property_type:string,type:string),(filter:(operand:!(CN),operator:'!!%3D'),property:(name:mp_country_code,source:properties,type:string),selected_property_type:string,type:string),(filter:(operand:flurry,operator:'not%20in'),property:(name:Origin,source:user,type:string),selected_property_type:string,type:string),(filter:(operand:!('1/1/2013','12/15/2015'),operator:%3E%3C,unit:days),property:(name:'first%20integration%20date',source:user,type:datetime),selected_property_type:datetime,type:datetime)),to_date:-348,type:unique,unit:month
       MP.api.MAX_SIMULTANEOUS_QUERIES = 36
       var $monthly = $('<div></div>').appendTo('body');
       var $monthlySignups = $('<div></div>').appendTo('body');

@@ -65,7 +65,7 @@
           return MP.Data.inst(qtrResults)
       }
       
-      var from = moment().subtract(12, 'months')
+      var from = moment().subtract(23, 'months').startOf('month')
       var unit = 'month';
       var params = {
         from: from,

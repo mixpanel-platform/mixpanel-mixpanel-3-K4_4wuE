@@ -221,8 +221,8 @@
 
             var dates = _.keys(signupsIntegratedData.json["Signups Integrated"])
             var i = dates.length - 1;
-            sevendayConv = { "Seven Day Conv" : [] }
-            thirtydayConv = { "Thirty Day Conv" : [] }
+            sevendayConv = { "Seven Day Conv" : {} }
+            thirtydayConv = { "Thirty Day Conv" : {} }
             for (i; i > 0; i--){
               date = dates[i]
               signupDate = signupsIntegratedData.json["Signups Integrated"][date]

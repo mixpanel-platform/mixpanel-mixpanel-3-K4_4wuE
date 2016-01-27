@@ -161,7 +161,15 @@
           $qtrly.MPChart({
               chartType: 'line'
           });
-    
+          
+          $monthlyConv.MPChart({
+              chartType: 'line'
+          });
+          
+          $qtrlyConv.MPChart({
+              chartType: 'line'
+          });
+          
           $conversionMonthly.MPChart({
               chartType: 'line'
           });
@@ -235,8 +243,8 @@
             }
             $eventIntegration.MPChart('addSeries', sevenday);
             $eventIntegration.MPChart('addSeries', thirtyday);
-             $eventIntegration.MPChart('addSeries', sevendayConv);
-            $eventIntegration.MPChart('addSeries', thirtydayConv);
+            $monthlyConv.MPChart('addSeries', sevendayConv);
+            $monthlyConv.MPChart('addSeries', thirtydayConv);
           })
         
 
@@ -245,21 +253,23 @@
           $monthly.MPChart('addSeries', firstPayment.filter(myFilter));
           $monthly.MPChart('addSeries', badgeAdded.filter(myFilter));
           $monthly.MPChart('addSeries', signupsIntegratedData.filter(myFilter));
-          $monthly.MPChart('addSeries', signupIntConv.filter(myFilter));
+
           
           $qtrly.MPChart('addSeries', signupIntegrationsQtrly.filter(myFilter));
           $qtrly.MPChart('addSeries', signupQtrly.filter(myFilter));
           $qtrly.MPChart('addSeries', homepageQtrly.filter(myFilter));
           $qtrly.MPChart('addSeries', firstPaymentQtrly.filter(myFilter));
           $qtrly.MPChart('addSeries', badgeAddedQtrly.filter(myFilter));
-          $qtrly.MPChart('addSeries', signupIntConvQtrly.filter(myFilter));
+
           
-          $monthly.MPChart('addSeries', signupConv)
-          $monthly.MPChart('addSeries', firstPaymentConv)
+          $monthlyConv.MPChart('addSeries', signupConv)
+          $monthlyConv.MPChart('addSeries', firstPaymentConv)
+          $monthlyConv.MPChart('addSeries', signupIntConv.filter(myFilter));
           
-          $qtrly.MPChart('addSeries', signupQtrlyConversion)
-          $qtrly.MPChart('addSeries', firstPaymentQtrlyConversion)
-       });
+          $qtrlyConv.MPChart('addSeries', signupQtrlyConversion)
+          $qtrlyConv.MPChart('addSeries', firstPaymentQtrlyConversion)
+          $qtrlyConv.MPChart('addSeries', signupIntConvQtrly.filter(myFilter));
+        });
     </script>
   </body>
 </html>

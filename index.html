@@ -218,9 +218,25 @@
                   chartType: 'line'
               });
             }
+
+            var dates = _.keys(signupsIntegratedData.json["Signups Integrated"])
+            var i = dates.length - 1;
+            sevendayConv = { "Seven Day Conv" : [] }
+            thirtydayConv = { "Thirty Day Conv" : [] }
+            for (i; i > 0; i--){
+              date = dates[i]
+              signupDate = signupsIntegratedData.json["Signups Integrated"][date]
+              sevendayDate = sevenday["sevenDay"][date]
+              thirtydayDate = thirtyday["thirtyDay"][date]
+              sevendayConv["Seven Day Conv"][date] = sevendayDate / signupDate
+              thirtydayConv["Thirty Day Conv"][date] = thirtydayDate / signupDate
+            }
+            debugger
+            
             $eventIntegration.MPChart('addSeries', sevenday);
             $eventIntegration.MPChart('addSeries', thirtyday);
-            debugger
+             $eventIntegration.MPChart('addSeries', sevendayConv);
+            $eventIntegration.MPChart('addSeries', thirtydayConv);
           })
         
 

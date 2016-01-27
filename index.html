@@ -130,59 +130,9 @@
       
       var firstPaymentDate = MP.api.query(insightsEndpoint, insightsParams)
 
-      var monthlyPromises = []
-      var mnthlyParams = {
-        unit: 'day',                      // specifies the the bucket size; can be 'day' or 'week'
-        interval_count: 30,                // the number of desired units
-        born_where: 'not defined (user["is_invited_user"])',
-        born_on: 'user["is_invited_user"]',
-        born_event: '$signup',
-        segment_method: 'first',
-        where: ''
-      };
+     
       
-      var whereStr = 'boolean(user["is_invited_user"]) == false and '
-      var monthsBack = 36;
-      var currentMonth;
-      
-      while ( monthsBack ) {
-        mnthlyParams.to = moment(from).add(monthsBack, 'month').subtract(1, 'day')
-        monthsBack--
-        mnthlyParams.from = moment(from).add(monthsBack, 'month')
-        currentMonth = moment(from).add(monthsBack, 'month').toISOString().slice(0,7)
-        nextMonth = moment(from).add(monthsBack + 1, 'month').toISOString().slice(0,7)
-        mnthlyParams.where = whereStr + '"' + currentMonth + '" in string(user["Event Integration"]) or "' + nextMonth + '" in string(user["Event Integration"])'
-        monthlyPromises.push(MP.api.retention.apply(MP.api, ['Viewed report', mnthlyParams]))
-      }
-      
-      Promise.all(monthlyPromises).then(function(promises){
-        var sevenday = {sevenDay: {} }
-        var thirtyday = {thirtyDay: {} }
-        var tmpseven = 0
-        var tmpthirty = 0
-        for (promise in promises) {
-          var results = promises[promise].json
-          for (date in results) {
-            tmpseven += results[date]['undefined']['counts'][6] || 0;
-            tmpthirty += results[date]['undefined']['counts'][29] || 0;
-          }
-          var dateStr = firstOfMonth(date) 
-          // divide dates by integrated signups
-          sevenday['sevenDay'][dateStr] = tmpseven;
-          thirtyday['thirtyDay'][dateStr] = tmpthirty;
-          tmpseven = 0;
-          tmpthirty = 0;
-      
-        
-          $eventIntegration.MPChart({
-              chartType: 'line'
-          });
-        }
-        $eventIntegration.MPChart('addSeries', sevenday);
-        $eventIntegration.MPChart('addSeries', thirtyday);
-        debugger
-      })
-        
+
       $.when(homepage, signups, signupsIntegrated, firstPaymentDate, badgeAdded).done(
         function(homepage, signups, signupsIntData, firstPaymentDateObj, badgeAdded) {
           var firstPayment = MP.Data.inst({'First Payment': insightsConversion(firstPaymentDateObj.results)})
@@ -231,6 +181,58 @@
           var myFilter = function(val) {
             return val > 0;
           };
+          
+          var monthlyPromises = []
+          var mnthlyParams = {
+            unit: 'day',                      // specifies the the bucket size; can be 'day' or 'week'
+            interval_count: 30,                // the number of desired units
+            born_where: 'not defined (user["is_invited_user"])',
+            born_on: 'user["is_invited_user"]',
+            born_event: '$signup',
+            segment_method: 'first',
+            where: ''
+          };
+          
+          var whereStr = 'boolean(user["is_invited_user"]) == false and '
+          var monthsBack = 36;
+          var currentMonth;
+          
+          while ( monthsBack ) {
+            mnthlyParams.to = moment(from).add(monthsBack, 'month').subtract(1, 'day')
+            monthsBack--
+            mnthlyParams.from = moment(from).add(monthsBack, 'month')
+            currentMonth = moment(from).add(monthsBack, 'month').toISOString().slice(0,7)
+            nextMonth = moment(from).add(monthsBack + 1, 'month').toISOString().slice(0,7)
+            mnthlyParams.where = whereStr + '"' + currentMonth + '" in string(user["Event Integration"]) or "' + nextMonth + '" in string(user["Event Integration"])'
+            monthlyPromises.push(MP.api.retention.apply(MP.api, ['Viewed report', mnthlyParams]))
+          }
+          
+          Promise.all(monthlyPromises).then(function(promises){
+            var sevenday = {sevenDay: {} }
+            var thirtyday = {thirtyDay: {} }
+            var tmpseven = 0
+            var tmpthirty = 0
+            for (promise in promises) {
+              var results = promises[promise].json
+              for (date in results) {
+                tmpseven += results[date]['undefined']['counts'][6] || 0;
+                tmpthirty += results[date]['undefined']['counts'][29] || 0;
+              }
+              var dateStr = firstOfMonth(date) 
+              // divide dates by integrated signups
+              sevenday['sevenDay'][dateStr] = tmpseven;
+              thirtyday['thirtyDay'][dateStr] = tmpthirty;
+              tmpseven = 0;
+              tmpthirty = 0;
+              $eventIntegration.MPChart({
+                  chartType: 'line'
+              });
+            }
+            $eventIntegration.MPChart('addSeries', sevenday);
+            $eventIntegration.MPChart('addSeries', thirtyday);
+            debugger
+          })
+        
 
           $monthly.MPChart('addSeries', homepage.filter(myFilter));
           $monthly.MPChart('addSeries', signups.filter(myFilter));

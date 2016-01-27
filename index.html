@@ -145,8 +145,8 @@
           var signupQtrly = qtrly(signups, signupEvent)
           var homepageQtrly = qtrly(homepage, homepageEvent)
           var firstPaymentQtrly = qtrly(firstPayment, 'First Payment')
-          var signupIntConvQtrly = qtrly(signupIntConv, 'Signups Integrated Conversion')
           var signupIntegrationsQtrly = qtrly(signupsIntegratedData, 'Signups Integrated')
+          var signupIntConvQtrly = {'Signups Integrated Conversion': conversion(signupsIntegratedDataQtrly, 'Signups Integrated', signupQtrly, signupEvent))
           var badgeAddedQtrly = qtrly(badgeAdded, 'badge added')
           
           var signupQtrlyConversion = {'Sign up Conversion' : conversion(signupQtrly, signupEvent, homepageQtrly, homepageEvent) }

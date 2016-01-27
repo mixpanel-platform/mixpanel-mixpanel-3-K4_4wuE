@@ -186,7 +186,7 @@
           var whereStr = 'boolean(user["is_invited_user"]) == false and '
           var monthsBack = 36;
           var currentMonth;
-          
+          debugger
           while ( monthsBack >= 0 ) {
             mnthlyParams.to = moment(from).add(monthsBack, 'month').subtract(1, 'day')
             monthsBack--

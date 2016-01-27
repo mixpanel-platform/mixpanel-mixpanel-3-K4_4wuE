@@ -139,7 +139,6 @@
           var signupConv = {'Sign up Conversion' : conversion(signups, signupEvent, homepage, homepageEvent) }
           signupsIntegratedData = MP.Data.inst({'Signups Integrated' : signupsIntData.json[signupEvent]})
           // signups int convers sign int / signups 
-          debugger
           var firstPaymentConv = { 'First Payment Conversion' : conversion(firstPayment, 'First Payment', signups, signupEvent)}
           
           var signupQtrly = qtrly(signups, signupEvent)

@@ -188,7 +188,7 @@
           var monthsBack = 36;
           var currentMonth;
           
-          while ( monthsBack ) {
+          while ( monthsBack >= 0 ) {
             mnthlyParams.to = moment(from).add(monthsBack, 'month').subtract(1, 'day')
             monthsBack--
             mnthlyParams.from = moment(from).add(monthsBack, 'month')

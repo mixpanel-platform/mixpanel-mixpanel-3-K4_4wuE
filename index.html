@@ -139,6 +139,8 @@
           var signupConv = {'Sign up Conversion' : conversion(signups, signupEvent, homepage, homepageEvent) }
           signupsIntegratedData = MP.Data.inst({'Signups Integrated' : signupsIntData.json[signupEvent]})
           // signups int convers sign int / signups 
+          var signupIntConvs = conversion(signupsIntegratedData, 'Signups Integrated', signups, signupEvent)
+          debugger
           var firstPaymentConv = { 'First Payment Conversion' : conversion(firstPayment, 'First Payment', signups, signupEvent)}
           
           var signupQtrly = qtrly(signups, signupEvent)
@@ -186,7 +188,6 @@
           var whereStr = 'boolean(user["is_invited_user"]) == false and '
           var monthsBack = 37;
           var currentMonth;
-          debugger
           while ( monthsBack >= 0 ) {
             // Modify this to be smarter about the date ranges
             mnthlyParams.to = moment(from).add(monthsBack, 'month').subtract(1, 'day')
@@ -232,8 +233,6 @@
               sevendayConv["Seven Day Conv"][date] = sevendayDate / signupDate
               thirtydayConv["Thirty Day Conv"][date] = thirtydayDate / signupDate
             }
-            debugger
-            
             $eventIntegration.MPChart('addSeries', sevenday);
             $eventIntegration.MPChart('addSeries', thirtyday);
              $eventIntegration.MPChart('addSeries', sevendayConv);

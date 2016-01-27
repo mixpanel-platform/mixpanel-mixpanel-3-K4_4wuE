@@ -69,7 +69,7 @@
       var unit = 'month';
       var params = {
         from: from,
-        to: moment().subtract(1, 'months'),
+        to: moment(),
         type: 'unique',
         unit: unit,
         where: 'not "flurry" in string(properties["origin"]) and (string(properties["$browser"]) == "Chrome") and (string(properties["mp_country_code"]) != "CN")'
@@ -167,6 +167,7 @@
             tmpthirty += results[date]['undefined']['counts'][29] || 0;
           }
           var dateStr = firstOfMonth(date) 
+          // divide dates by integrated signups
           sevenday['sevenDay'][dateStr] = tmpseven;
           thirtyday['thirtyDay'][dateStr] = tmpthirty;
           tmpseven = 0;
@@ -179,6 +180,7 @@
         }
         $eventIntegration.MPChart('addSeries', sevenday);
         $eventIntegration.MPChart('addSeries', thirtyday);
+        debugger
       })
         
       $.when(homepage, signups, signupsIntegrated, firstPaymentDate, badgeAdded).done(
@@ -186,6 +188,7 @@
           var firstPayment = MP.Data.inst({'First Payment': insightsConversion(firstPaymentDateObj.results)})
           var signupConv = {'Sign up Conversion' : conversion(signups, signupEvent, homepage, homepageEvent) }
           var signupsIntegrated = MP.Data.inst({'Signups Integrated' : signupsIntData.json[signupEvent]})
+          // signups int convers sign int / signups 
           var firstPaymentConv = { 'First Payment Conversion' : conversion(firstPayment, 'First Payment', signups, signupEvent)}
           
           var signupQtrly = qtrly(signups, signupEvent)

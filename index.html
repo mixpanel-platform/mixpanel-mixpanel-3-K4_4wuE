@@ -139,14 +139,14 @@
           var signupConv = {'Sign up Conversion' : conversion(signups, signupEvent, homepage, homepageEvent) }
           signupsIntegratedData = MP.Data.inst({'Signups Integrated' : signupsIntData.json[signupEvent]})
           // signups int convers sign int / signups 
-          var signupIntConvs = conversion(signupsIntegratedData, 'Signups Integrated', signups, signupEvent)
+          var signupIntConv = { 'Signups Integrated Conversion' : conversion(signupsIntegratedData, 'Signups Integrated', signups, signupEvent) }
           debugger
           var firstPaymentConv = { 'First Payment Conversion' : conversion(firstPayment, 'First Payment', signups, signupEvent)}
           
           var signupQtrly = qtrly(signups, signupEvent)
           var homepageQtrly = qtrly(homepage, homepageEvent)
           var firstPaymentQtrly = qtrly(firstPayment, 'First Payment')
-          
+          var signupIntConvQtrly = qtrly(signupIntConv, 'Signups Integrated Conversion')
           var signupIntegrationsQtrly = qtrly(signupsIntegratedData, 'Signups Integrated')
           var badgeAddedQtrly = qtrly(badgeAdded, 'badge added')
           
@@ -245,12 +245,14 @@
           $monthly.MPChart('addSeries', firstPayment.filter(myFilter));
           $monthly.MPChart('addSeries', badgeAdded.filter(myFilter));
           $monthly.MPChart('addSeries', signupsIntegratedData.filter(myFilter));
+          $monthly.MPChart('addSeries', signupsIntConv.filter(myFilter));
           
           $qtrly.MPChart('addSeries', signupIntegrationsQtrly.filter(myFilter));
           $qtrly.MPChart('addSeries', signupQtrly.filter(myFilter));
           $qtrly.MPChart('addSeries', homepageQtrly.filter(myFilter));
           $qtrly.MPChart('addSeries', firstPaymentQtrly.filter(myFilter));
           $qtrly.MPChart('addSeries', badgeAddedQtrly.filter(myFilter));
+          $qtrly.MPChart('addSeries', signupIntConvQtrly.filter(myFilter));
           
           $monthly.MPChart('addSeries', signupConv)
           $monthly.MPChart('addSeries', firstPaymentConv)
